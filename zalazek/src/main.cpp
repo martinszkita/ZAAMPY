@@ -18,7 +18,7 @@ int main()
         return 1;
     }
 
-  void *pLibHnd_Move = dlopen("libInterp4Move.so",RTLD_LAZY);
+  void *pLibHnd_Move = dlopen("libInterp4Move.so",RTLD_LAZY); // ladowanie biblioteki dynamicznej
   AbstractInterp4Command *(*pCreateCmd_Move)(void);
   void *pFun;
 
@@ -28,7 +28,7 @@ int main()
   }
 
 
-  pFun = dlsym(pLibHnd_Move,"CreateCmd");
+  pFun = dlsym(pLibHnd_Move,"CreateCmd"); // uzyskanie wskaznika do obiektu w bibliotece
   if (!pFun) {
     cerr << "!!! Nie znaleziono funkcji CreateCmd" << endl;
     return 1;

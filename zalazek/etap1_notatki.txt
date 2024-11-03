@@ -1,0 +1,22 @@
+SEKWENCYJNE PRZETWARZANIE POLECEN DLA INTERPRETERA (schemat na eportalu)
+1. przetworz plik  z uzyciem preprocesora
+2. wczytaj nazwe komendy (nie getline, nie litera po literze,) 
+UZYWAC STRM >> NAZWA_KOMENDY(std::STRING) bo to pomija znaki biale i cyfry na poczatku
+3. sprawdzic czy udalo sie wczytac slowo (jesli nie to sukces bo juz koniec pliku, zakladamy poprawny plik)
+jesli tak to idziemy dalej
+4. znajdz wtyczke do obslugi polecenia
+5. czy znaleziono wtyczke o takiej nazwie? (literowka np.) -> jesli nie to porazka, PROGRAM STOP, zgalaszamy blad!!!
+jesli tak to idziemy dalej
+6. tworzymy tera instancje interpretera (kazdy watek ma swoja strukture ze swoimi parametrami dla polecenia) , jesli sie nie udalo -> KOMUNIKAT porazka
+jesli tak to idziemy dalej
+7. uzyj instancji interpetera do wczytania parametrow danego polecenia
+czy udalo sie wczytac dane? ->nie to porazka STOP ERROR, napisac w ktorym miejscu problem
+jesli tak to idziemy dalej
+8. wykonaj polecenie 
+czy sukces? wartosci parametrow moga byc bledne, np. poza dopuszczlnym przedzialem wtedy ERRORR404
+9 zwolnic pamiec czyli usunac instancje interpretera
+10. zapetlamy i czytamy nowe polecenie 
+
+KONIEC
+
+* dla blokow rownoleglych troche inaczej bedzie

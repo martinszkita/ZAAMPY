@@ -29,6 +29,14 @@ class Interp4Move: public AbstractInterp4Command {
   double  _Speed_mmS;
   double  _Distance_mm;
  public:
+
+  void SetSpeed(const  double & v){
+    _Speed_mmS = v;
+  }
+
+  void SetDistance(const  double & dist){
+    _Distance_mm = dist;
+  }
   /*!
    * \brief
    */
