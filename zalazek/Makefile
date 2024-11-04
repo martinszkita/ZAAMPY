@@ -20,14 +20,15 @@ CPPFLAGS=-Wall -pedantic -std=c++17 -Iinc
 LDFLAGS=-Wall
 
 
-
-
 interp: obj/main.o
 	g++ ${LDFLAGS} -o interp  obj/main.o -ldl
 
 obj/main.o: src/main.cpp inc/AbstractInterp4Command.hh inc/AbstractScene.hh\
             inc/AbstractComChannel.hh
 	g++ -c ${CPPFLAGS} -o obj/main.o src/main.cpp
+
+obj/ComChannel.o: src/ComChannel.cpp
+	$(CXX) -c $(CXXFLAGS) -o obj/ComChannel.o src/ComChannel.cpp
 
 doc:
 	cd dox; make
