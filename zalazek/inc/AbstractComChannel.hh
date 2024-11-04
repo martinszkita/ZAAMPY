@@ -21,7 +21,7 @@
     class AbstractComChannel {
      public:
 
-      virtual ~AbstractComChannel() {}
+      virtual ~AbstractComChannel() = default;
       
       /*!
        * \brief Inicjalizuje destryptor gniazda.
@@ -29,7 +29,7 @@
        * Inicjalizuje destryptora pliku skojarzonego z połączeniem sieciowym z serwerem.
        * \param[in] Socket - zawiera poprawny deskryptor.
        */
-       virtual void Init(int Socket) = 0;
+       virtual bool Init(int Socket) = 0;
       /*!
        * \brief Udostępnia deskryptor pliku skojarzonego z połączeniem sieciowym z serwerem.
        *

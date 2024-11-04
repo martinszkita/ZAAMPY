@@ -1,0 +1,23 @@
+<map id="main" name="main">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,248,57,273"/>
+<area shape="rect" id="Node000002" href="$classInterp4Move.html#a1628072cee4eeac0815af3fab2b928e4" title="Wykonuje polecenie oraz wizualizuje jego realizację" alt="" coords="114,95,283,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="34,247,57,191,77,158,104,131,114,124,117,128,107,135,81,162,61,193,39,249"/>
+<area shape="rect" id="Node000007" href="$classAbstractInterp4Command.html#a13b10657b8d9f2a946c6710d2b673632" title="Udostępnia nazwę polecenia." alt="" coords="107,145,291,185"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="43,246,69,220,104,194,116,188,118,193,107,199,73,224,46,250"/>
+<area shape="rect" id="Node000008" href="$classAbstractInterp4Command.html#a4a386292228025e3bbf7014815ca94cb" title="Wyświetla postać bieżącego polecenia (nazwę oraz wartości parametrów)" alt="" coords="107,209,291,249"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="57,253,93,246,94,252,58,258"/>
+<area shape="rect" id="Node000009" href="$classAbstractInterp4Command.html#a5f43727a1fca67315f771ab0365e2bff" title="Wyświetla składnię polecenia." alt="" coords="107,273,291,313"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="58,263,94,270,93,275,57,268"/>
+<area shape="rect" id="Node000010" href="$classInterp4Move.html#a0f6b21094f8e3200dbfcc01fbd3882aa" title=" " alt="" coords="105,337,292,363"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="46,271,72,297,107,322,124,330,122,335,104,327,68,301,42,275"/>
+<area shape="rect" id="Node000011" href="$classInterp4Move.html#ade67a5ddbb310b1ee98f725c825540fc" title=" " alt="" coords="113,387,285,412"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="40,272,63,322,83,350,107,373,115,379,113,383,104,377,79,353,59,325,35,275"/>
+<area shape="rect" id="Node000003" href="$classAbstractScene.html#acbd957fb31a2aa39f03319e421d744ca" title="Wyszukuje obiekt o podanej pełnej kwalifikowanej nazwie." alt="" coords="340,5,547,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="223,92,276,67,339,41,369,32,370,37,341,46,278,72,225,97"/>
+<area shape="rect" id="Node000004" href="$classAbstractMobileObj.html#aa6d1d5694ae73629e6878987cda08c88" title="Udostępnia wartość kąta yaw." alt="" coords="371,55,515,95"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="283,94,357,84,358,89,284,99"/>
+<area shape="rect" id="Node000005" href="$classAbstractMobileObj.html#ac82c9e2a9237684663e8083fc203be7d" title="Udostępnia współrzędne aktualnej pozycji obiektu." alt="" coords="371,119,515,159"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="284,116,358,126,357,131,283,121"/>
+<area shape="rect" id="Node000006" href="$classAbstractMobileObj.html#abed1b4b44046c6f515ce1ded3607aefa" title="Zmienia współrzędne aktualnej pozycji obiektu." alt="" coords="371,183,515,223"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="261,118,293,130,308,140,318,150,341,169,359,177,357,182,339,174,314,154,305,144,291,135,259,123"/>
+</map>

@@ -5,6 +5,8 @@
 #include <sstream> 
 #include "AbstractInterp4Command.hh"
 #include "../plugin/inc/Interp4Move.hh"
+#include "Scene.hh"
+#include "ComChannel.hh"
 
 
 using namespace std;
@@ -12,7 +14,7 @@ using namespace std;
 
 int main()
 {
-  std::ifstream file("polecenia.cmd");  // Otwieranie pliku z poleceniami
+  std::ifstream file("polecenia.xml");  // Otwieranie pliku z poleceniami
     if (!file.is_open()) {
         std::cerr << "Nie można otworzyć pliku z poleceniami!" << std::endl;
         return 1;
@@ -64,9 +66,9 @@ int main()
           movePlugin.SetSpeed(speed);  // Przykładowe ustawienie prędkości
           movePlugin.SetDistance(distance);  // Przykładowe ustawienie odległości
 
-          // Załóżmy, że mamy już instancje AbstractScene i AbstractComChannel
-          AbstractScene scene;
-          AbstractComChannel comChannel;
+
+          Scene scene;
+          ComChannel comChannel;
 
           // Wykonaj polecenie
           movePlugin.ExecCmd(scene, objectName.c_str(), comChannel);

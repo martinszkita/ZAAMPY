@@ -1,0 +1,5 @@
+<map id="AbstractScene" name="AbstractScene">
+<area shape="rect" id="Node000001" title="Definiuje interfejs klasy modelującej scenę roboczą." alt="" coords="5,5,116,31"/>
+<area shape="rect" id="Node000002" href="$classScene.html" title=" " alt="" coords="31,79,90,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="63,44,63,79,58,79,58,44"/>
+</map>

@@ -1,0 +1,274 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pl">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Interpreter: Dokumentacja pliku main.cpp</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Interpreter<span id="projectnumber">&#160;0.1</span>
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Wygenerowano przez Doxygen 1.9.8 -->
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',false,false,'search.php','Szukaj');
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('main_8cpp.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#func-members">Funkcje</a>  </div>
+  <div class="headertitle"><div class="title">Dokumentacja pliku main.cpp</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><code>#include &lt;iostream&gt;</code><br />
+<code>#include &lt;fstream&gt;</code><br />
+<code>#include &lt;dlfcn.h&gt;</code><br />
+<code>#include &lt;cassert&gt;</code><br />
+<code>#include &lt;sstream&gt;</code><br />
+<code>#include &quot;<a class="el" href="AbstractInterp4Command_8hh_source.html">AbstractInterp4Command.hh</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="Interp4Move_8hh_source.html">../plugin/inc/Interp4Move.hh</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="Scene_8hh_source.html">Scene.hh</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="ComChannel_8hh_source.html">ComChannel.hh</a>&quot;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Wykres zależności załączania dla main.cpp:</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8cpp__incl.png" border="0" usemap="#amain_8cpp" alt=""/></div>
+<map name="amain_8cpp" id="amain_8cpp">
+<area shape="rect" title=" " alt="" coords="505,5,583,31"/>
+<area shape="rect" title=" " alt="" coords="18,519,94,544"/>
+<area shape="poly" title=" " alt="" coords="505,24,374,35,292,45,209,59,131,78,67,101,42,115,24,130,12,146,8,164,8,386,12,419,21,452,45,506,40,508,16,454,6,420,3,386,3,163,7,144,20,126,39,110,65,96,130,72,208,54,291,40,374,30,504,19"/>
+<area shape="rect" title=" " alt="" coords="635,79,706,104"/>
+<area shape="poly" title=" " alt="" coords="566,28,639,69,637,74,563,33"/>
+<area shape="rect" title=" " alt="" coords="731,79,795,104"/>
+<area shape="poly" title=" " alt="" coords="580,28,718,73,717,78,578,33"/>
+<area shape="rect" title=" " alt="" coords="619,519,685,544"/>
+<area shape="poly" title=" " alt="" coords="557,29,740,224,760,265,765,310,765,386,763,406,757,426,736,461,709,490,682,513,679,509,705,486,732,458,752,424,758,405,760,386,760,310,755,266,735,227,553,33"/>
+<area shape="rect" title=" " alt="" coords="819,79,890,104"/>
+<area shape="poly" title=" " alt="" coords="584,26,806,76,805,81,583,31"/>
+<area shape="rect" href="AbstractInterp4Command_8hh.html" title="Zawiera definicję klasy abstrakcyjnej AbstractInterp4Command." alt="" coords="253,152,457,177"/>
+<area shape="poly" title=" " alt="" coords="538,33,510,68,470,106,433,130,397,149,394,144,431,125,466,102,506,64,534,29"/>
+<area shape="rect" href="Interp4Move_8hh.html" title="Definicja klasy Interp4Move." alt="" coords="253,79,456,104"/>
+<area shape="poly" title=" " alt="" coords="515,33,399,76,398,71,513,28"/>
+<area shape="rect" href="Scene_8hh.html" title=" " alt="" coords="494,152,573,177"/>
+<area shape="poly" title=" " alt="" coords="546,31,538,138,533,138,540,31"/>
+<area shape="rect" href="ComChannel_8hh.html" title=" " alt="" coords="108,152,228,177"/>
+<area shape="poly" title=" " alt="" coords="505,22,450,25,382,34,310,51,275,65,243,81,209,110,184,142,180,139,205,106,240,76,273,60,309,46,381,28,449,19,504,16"/>
+<area shape="rect" href="AbstractScene_8hh.html" title="Zawiera definicję klasy abstrakcyjnej AbstractScene." alt="" coords="288,225,419,251"/>
+<area shape="poly" title=" " alt="" coords="357,178,356,212,351,212,352,178"/>
+<area shape="rect" href="AbstractComChannel_8hh.html" title="Zawiera definicję klasy abstrakcyjnej AbstractComChannel." alt="" coords="93,225,264,251"/>
+<area shape="poly" title=" " alt="" coords="327,180,221,222,219,218,325,175"/>
+<area shape="rect" href="AbstractMobileObj_8hh.html" title="Zawiera definicję klasy abstrakcyjnej AbstractMobileObj." alt="" coords="326,299,482,324"/>
+<area shape="poly" title=" " alt="" coords="364,249,390,286,386,289,360,253"/>
+<area shape="rect" href="Vector3D_8hh.html" title="Deklaracja instacji szablonu geom::Vector." alt="" coords="354,372,454,397"/>
+<area shape="poly" title=" " alt="" coords="407,324,407,358,401,358,401,324"/>
+<area shape="rect" href="geomVector_8hh.html" title="Definicja szablonu wektora N&#45;wymiarowego." alt="" coords="346,445,462,471"/>
+<area shape="poly" title=" " alt="" coords="407,398,407,432,401,432,401,398"/>
+<area shape="poly" title=" " alt="" coords="349,473,108,522,107,517,348,468"/>
+<area shape="poly" title=" " alt="" coords="445,468,606,514,605,519,443,473"/>
+<area shape="rect" title=" " alt="" coords="374,519,434,544"/>
+<area shape="poly" title=" " alt="" coords="407,471,407,505,401,505,401,471"/>
+<area shape="rect" title=" " alt="" coords="148,299,209,324"/>
+<area shape="poly" title=" " alt="" coords="181,251,181,285,176,285,176,251"/>
+<area shape="poly" title=" " alt="" coords="357,104,357,138,352,138,352,104"/>
+<area shape="poly" title=" " alt="" coords="505,180,396,223,394,218,503,175"/>
+<area shape="poly" title=" " alt="" coords="525,180,425,290,422,287,521,176"/>
+<area shape="rect" title=" " alt="" coords="493,225,552,251"/>
+<area shape="poly" title=" " alt="" coords="534,178,529,212,524,211,529,177"/>
+<area shape="rect" title=" " alt="" coords="577,225,626,251"/>
+<area shape="poly" title=" " alt="" coords="546,176,583,213,579,217,543,180"/>
+<area shape="rect" title=" " alt="" coords="651,225,725,251"/>
+<area shape="poly" title=" " alt="" coords="559,175,651,217,649,222,557,180"/>
+<area shape="poly" title=" " alt="" coords="144,180,112,199,83,227,70,248,63,265,59,310,59,386,59,505,53,505,53,386,53,310,57,264,65,245,79,224,109,195,141,175"/>
+<area shape="poly" title=" " alt="" coords="172,177,178,211,172,212,167,178"/>
+</map>
+</div>
+</div>
+<p><a href="main_8cpp_source.html">Idź do kodu źródłowego tego pliku.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Funkcje</h2></td></tr>
+<tr class="memitem:ae66f6b31b5ad750f1fe042a706a4e3d4" id="r_ae66f6b31b5ad750f1fe042a706a4e3d4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a> ()</td></tr>
+<tr class="separator:ae66f6b31b5ad750f1fe042a706a4e3d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Dokumentacja funkcji</h2>
+<a id="ae66f6b31b5ad750f1fe042a706a4e3d4" name="ae66f6b31b5ad750f1fe042a706a4e3d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae66f6b31b5ad750f1fe042a706a4e3d4">&#9670;&#160;</a></span>main()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int main </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definicja w linii <a class="el" href="main_8cpp_source.html#l00015">15</a> pliku <a class="el" href="main_8cpp_source.html">main.cpp</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   16</span>{</div>
+<div class="line"><span class="lineno">   17</span>  std::ifstream file(<span class="stringliteral">&quot;polecenia.xml&quot;</span>);  <span class="comment">// Otwieranie pliku z poleceniami</span></div>
+<div class="line"><span class="lineno">   18</span>    <span class="keywordflow">if</span> (!file.is_open()) {</div>
+<div class="line"><span class="lineno">   19</span>        std::cerr &lt;&lt; <span class="stringliteral">&quot;Nie można otworzyć pliku z poleceniami!&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><span class="lineno">   20</span>        <span class="keywordflow">return</span> 1;</div>
+<div class="line"><span class="lineno">   21</span>    }</div>
+<div class="line"><span class="lineno">   22</span> </div>
+<div class="line"><span class="lineno">   23</span>  <span class="keywordtype">void</span> *pLibHnd_Move = dlopen(<span class="stringliteral">&quot;libInterp4Move.so&quot;</span>,RTLD_LAZY); <span class="comment">// ladowanie biblioteki dynamicznej</span></div>
+<div class="line"><span class="lineno">   24</span>  <a class="code hl_class" href="classAbstractInterp4Command.html">AbstractInterp4Command</a> *(*pCreateCmd_Move)(void);</div>
+<div class="line"><span class="lineno">   25</span>  <span class="keywordtype">void</span> *pFun;</div>
+<div class="line"><span class="lineno">   26</span> </div>
+<div class="line"><span class="lineno">   27</span>  <span class="keywordflow">if</span> (!pLibHnd_Move) {</div>
+<div class="line"><span class="lineno">   28</span>    cerr &lt;&lt; <span class="stringliteral">&quot;!!! Brak biblioteki: Interp4Move.so&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">   29</span>    <span class="keywordflow">return</span> 1;</div>
+<div class="line"><span class="lineno">   30</span>  }</div>
+<div class="line"><span class="lineno">   31</span> </div>
+<div class="line"><span class="lineno">   32</span> </div>
+<div class="line"><span class="lineno">   33</span>  pFun = dlsym(pLibHnd_Move,<span class="stringliteral">&quot;CreateCmd&quot;</span>); <span class="comment">// uzyskanie wskaznika do obiektu w bibliotece</span></div>
+<div class="line"><span class="lineno">   34</span>  <span class="keywordflow">if</span> (!pFun) {</div>
+<div class="line"><span class="lineno">   35</span>    cerr &lt;&lt; <span class="stringliteral">&quot;!!! Nie znaleziono funkcji CreateCmd&quot;</span> &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">   36</span>    <span class="keywordflow">return</span> 1;</div>
+<div class="line"><span class="lineno">   37</span>  }</div>
+<div class="line"><span class="lineno">   38</span>  pCreateCmd_Move = <span class="keyword">reinterpret_cast&lt;</span><a class="code hl_class" href="classAbstractInterp4Command.html">AbstractInterp4Command</a>* (*)(<span class="keywordtype">void</span>)<span class="keyword">&gt;</span>(pFun);</div>
+<div class="line"><span class="lineno">   39</span> </div>
+<div class="line"><span class="lineno">   40</span> </div>
+<div class="line"><span class="lineno">   41</span>  <a class="code hl_class" href="classAbstractInterp4Command.html">AbstractInterp4Command</a> *pCmd = pCreateCmd_Move();</div>
+<div class="line"><span class="lineno">   42</span> </div>
+<div class="line"><span class="lineno">   43</span>  cout &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">   44</span>  cout &lt;&lt; pCmd-&gt;<a class="code hl_function" href="classAbstractInterp4Command.html#a13b10657b8d9f2a946c6710d2b673632">GetCmdName</a>() &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">   45</span>  cout &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">   46</span>  pCmd-&gt;<a class="code hl_function" href="classAbstractInterp4Command.html#a5f43727a1fca67315f771ab0365e2bff">PrintSyntax</a>();</div>
+<div class="line"><span class="lineno">   47</span>  cout &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">   48</span>  pCmd-&gt;<a class="code hl_function" href="classAbstractInterp4Command.html#a4a386292228025e3bbf7014815ca94cb">PrintCmd</a>();</div>
+<div class="line"><span class="lineno">   49</span>  cout &lt;&lt; endl;</div>
+<div class="line"><span class="lineno">   50</span> </div>
+<div class="line"><span class="lineno">   51</span>  <span class="comment">//</span></div>
+<div class="line"><span class="lineno">   52</span>  std::string command;</div>
+<div class="line"><span class="lineno">   53</span>  <span class="keywordflow">while</span> (std::getline(file, command)) {  <span class="comment">// Czytanie linii z poleceniami</span></div>
+<div class="line"><span class="lineno">   54</span>      std::istringstream iss(command);</div>
+<div class="line"><span class="lineno">   55</span>      std::string cmdType;</div>
+<div class="line"><span class="lineno">   56</span>      iss &gt;&gt; cmdType;</div>
+<div class="line"><span class="lineno">   57</span> </div>
+<div class="line"><span class="lineno">   58</span>      <span class="keywordflow">if</span> (cmdType == <span class="stringliteral">&quot;Move&quot;</span>) {</div>
+<div class="line"><span class="lineno">   59</span>          <span class="comment">// Tworzymy wtyczkę Move i odczytujemy parametry polecenia</span></div>
+<div class="line"><span class="lineno">   60</span>          std::string objectName;</div>
+<div class="line"><span class="lineno">   61</span>          <span class="keywordtype">double</span> speed, distance;</div>
+<div class="line"><span class="lineno">   62</span>          iss &gt;&gt; objectName &gt;&gt; speed &gt;&gt; distance;  <span class="comment">// Odczyt nazwy obiektu, prędkości i odległości</span></div>
+<div class="line"><span class="lineno">   63</span> </div>
+<div class="line"><span class="lineno">   64</span>          <span class="comment">// Tworzymy instancję wtyczki Move</span></div>
+<div class="line"><span class="lineno">   65</span>          <a class="code hl_class" href="classInterp4Move.html">Interp4Move</a> movePlugin;</div>
+<div class="line"><span class="lineno">   66</span>          movePlugin.<a class="code hl_function" href="classInterp4Move.html#ade67a5ddbb310b1ee98f725c825540fc">SetSpeed</a>(speed);  <span class="comment">// Przykładowe ustawienie prędkości</span></div>
+<div class="line"><span class="lineno">   67</span>          movePlugin.<a class="code hl_function" href="classInterp4Move.html#a0f6b21094f8e3200dbfcc01fbd3882aa">SetDistance</a>(distance);  <span class="comment">// Przykładowe ustawienie odległości</span></div>
+<div class="line"><span class="lineno">   68</span> </div>
+<div class="line"><span class="lineno">   69</span> </div>
+<div class="line"><span class="lineno">   70</span>          <a class="code hl_class" href="classScene.html">Scene</a> scene;</div>
+<div class="line"><span class="lineno">   71</span>          <a class="code hl_class" href="classComChannel.html">ComChannel</a> comChannel;</div>
+<div class="line"><span class="lineno">   72</span> </div>
+<div class="line"><span class="lineno">   73</span>          <span class="comment">// Wykonaj polecenie</span></div>
+<div class="line"><span class="lineno">   74</span>          movePlugin.<a class="code hl_function" href="classInterp4Move.html#a1628072cee4eeac0815af3fab2b928e4">ExecCmd</a>(scene, objectName.c_str(), comChannel);</div>
+<div class="line"><span class="lineno">   75</span>      }</div>
+<div class="line"><span class="lineno">   76</span>  }</div>
+<div class="line"><span class="lineno">   77</span>  <span class="comment">//</span></div>
+<div class="line"><span class="lineno">   78</span>  </div>
+<div class="line"><span class="lineno">   79</span>  <span class="keyword">delete</span> pCmd;</div>
+<div class="line"><span class="lineno">   80</span> </div>
+<div class="line"><span class="lineno">   81</span>  dlclose(pLibHnd_Move);</div>
+<div class="line"><span class="lineno">   82</span>}</div>
+<div class="ttc" id="aclassAbstractInterp4Command_html"><div class="ttname"><a href="classAbstractInterp4Command.html">AbstractInterp4Command</a></div><div class="ttdoc">Definiuje interfejs interpretera polecenia.</div><div class="ttdef"><b>Definition</b> <a href="AbstractInterp4Command_8hh_source.html#l00023">AbstractInterp4Command.hh:23</a></div></div>
+<div class="ttc" id="aclassAbstractInterp4Command_html_a13b10657b8d9f2a946c6710d2b673632"><div class="ttname"><a href="classAbstractInterp4Command.html#a13b10657b8d9f2a946c6710d2b673632">AbstractInterp4Command::GetCmdName</a></div><div class="ttdeci">virtual const char * GetCmdName() const =0</div><div class="ttdoc">Udostępnia nazwę polecenia.</div></div>
+<div class="ttc" id="aclassAbstractInterp4Command_html_a4a386292228025e3bbf7014815ca94cb"><div class="ttname"><a href="classAbstractInterp4Command.html#a4a386292228025e3bbf7014815ca94cb">AbstractInterp4Command::PrintCmd</a></div><div class="ttdeci">virtual void PrintCmd() const =0</div><div class="ttdoc">Wyświetla postać bieżącego polecenia (nazwę oraz wartości parametrów)</div></div>
+<div class="ttc" id="aclassAbstractInterp4Command_html_a5f43727a1fca67315f771ab0365e2bff"><div class="ttname"><a href="classAbstractInterp4Command.html#a5f43727a1fca67315f771ab0365e2bff">AbstractInterp4Command::PrintSyntax</a></div><div class="ttdeci">virtual void PrintSyntax() const =0</div><div class="ttdoc">Wyświetla składnię polecenia.</div></div>
+<div class="ttc" id="aclassComChannel_html"><div class="ttname"><a href="classComChannel.html">ComChannel</a></div><div class="ttdef"><b>Definition</b> <a href="ComChannel_8hh_source.html#l00004">ComChannel.hh:4</a></div></div>
+<div class="ttc" id="aclassInterp4Move_html"><div class="ttname"><a href="classInterp4Move.html">Interp4Move</a></div><div class="ttdoc">Modeluje polecenie dla robota mobilnego, które wymusza jego ruch do przodu.</div><div class="ttdef"><b>Definition</b> <a href="Interp4Command_8hh_source.html#l00009">Interp4Command.hh:9</a></div></div>
+<div class="ttc" id="aclassInterp4Move_html_a0f6b21094f8e3200dbfcc01fbd3882aa"><div class="ttname"><a href="classInterp4Move.html#a0f6b21094f8e3200dbfcc01fbd3882aa">Interp4Move::SetDistance</a></div><div class="ttdeci">void SetDistance(const double &amp;dist)</div><div class="ttdef"><b>Definition</b> <a href="Interp4Move_8hh_source.html#l00037">Interp4Move.hh:37</a></div></div>
+<div class="ttc" id="aclassInterp4Move_html_a1628072cee4eeac0815af3fab2b928e4"><div class="ttname"><a href="classInterp4Move.html#a1628072cee4eeac0815af3fab2b928e4">Interp4Move::ExecCmd</a></div><div class="ttdeci">virtual bool ExecCmd(AbstractScene &amp;rScn, const char *sMobObjName, AbstractComChannel &amp;rComChann) override</div><div class="ttdoc">Wykonuje polecenie oraz wizualizuje jego realizację</div><div class="ttdef"><b>Definition</b> <a href="Interp4Move_8cpp_source.html#l00057">Interp4Move.cpp:57</a></div></div>
+<div class="ttc" id="aclassInterp4Move_html_ade67a5ddbb310b1ee98f725c825540fc"><div class="ttname"><a href="classInterp4Move.html#ade67a5ddbb310b1ee98f725c825540fc">Interp4Move::SetSpeed</a></div><div class="ttdeci">void SetSpeed(const double &amp;v)</div><div class="ttdef"><b>Definition</b> <a href="Interp4Move_8hh_source.html#l00033">Interp4Move.hh:33</a></div></div>
+<div class="ttc" id="aclassScene_html"><div class="ttname"><a href="classScene.html">Scene</a></div><div class="ttdef"><b>Definition</b> <a href="Scene_8hh_source.html#l00010">Scene.hh:10</a></div></div>
+</div><!-- fragment -->
+<p class="reference">Odwołuje się do <a class="el" href="Interp4Move_8cpp_source.html#l00057">Interp4Move::ExecCmd()</a>, <a class="el" href="classAbstractInterp4Command.html#a13b10657b8d9f2a946c6710d2b673632">AbstractInterp4Command::GetCmdName()</a>, <a class="el" href="classAbstractInterp4Command.html#a4a386292228025e3bbf7014815ca94cb">AbstractInterp4Command::PrintCmd()</a>, <a class="el" href="classAbstractInterp4Command.html#a5f43727a1fca67315f771ab0365e2bff">AbstractInterp4Command::PrintSyntax()</a>, <a class="el" href="Interp4Move_8hh_source.html#l00037">Interp4Move::SetDistance()</a> i <a class="el" href="Interp4Move_8hh_source.html#l00033">Interp4Move::SetSpeed()</a>.</p>
+<div class="dynheader">
+Oto graf wywołań dla tej funkcji:</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4_cgraph.png" border="0" usemap="#amain_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4_cgraph" alt=""/></div>
+<map name="amain_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4_cgraph" id="amain_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4_cgraph">
+<area shape="rect" title=" " alt="" coords="5,248,57,273"/>
+<area shape="rect" href="classInterp4Move.html#a1628072cee4eeac0815af3fab2b928e4" title="Wykonuje polecenie oraz wizualizuje jego realizację" alt="" coords="114,95,283,120"/>
+<area shape="poly" title=" " alt="" coords="34,247,57,191,77,158,104,131,114,124,117,128,107,135,81,162,61,193,39,249"/>
+<area shape="rect" href="classAbstractInterp4Command.html#a13b10657b8d9f2a946c6710d2b673632" title="Udostępnia nazwę polecenia." alt="" coords="107,145,291,185"/>
+<area shape="poly" title=" " alt="" coords="43,246,69,220,104,194,116,188,118,193,107,199,73,224,46,250"/>
+<area shape="rect" href="classAbstractInterp4Command.html#a4a386292228025e3bbf7014815ca94cb" title="Wyświetla postać bieżącego polecenia (nazwę oraz wartości parametrów)" alt="" coords="107,209,291,249"/>
+<area shape="poly" title=" " alt="" coords="57,253,93,246,94,252,58,258"/>
+<area shape="rect" href="classAbstractInterp4Command.html#a5f43727a1fca67315f771ab0365e2bff" title="Wyświetla składnię polecenia." alt="" coords="107,273,291,313"/>
+<area shape="poly" title=" " alt="" coords="58,263,94,270,93,275,57,268"/>
+<area shape="rect" href="classInterp4Move.html#a0f6b21094f8e3200dbfcc01fbd3882aa" title=" " alt="" coords="105,337,292,363"/>
+<area shape="poly" title=" " alt="" coords="46,271,72,297,107,322,124,330,122,335,104,327,68,301,42,275"/>
+<area shape="rect" href="classInterp4Move.html#ade67a5ddbb310b1ee98f725c825540fc" title=" " alt="" coords="113,387,285,412"/>
+<area shape="poly" title=" " alt="" coords="40,272,63,322,83,350,107,373,115,379,113,383,104,377,79,353,59,325,35,275"/>
+<area shape="rect" href="classAbstractScene.html#acbd957fb31a2aa39f03319e421d744ca" title="Wyszukuje obiekt o podanej pełnej kwalifikowanej nazwie." alt="" coords="340,5,547,31"/>
+<area shape="poly" title=" " alt="" coords="223,92,276,67,339,41,369,32,370,37,341,46,278,72,225,97"/>
+<area shape="rect" href="classAbstractMobileObj.html#aa6d1d5694ae73629e6878987cda08c88" title="Udostępnia wartość kąta yaw." alt="" coords="371,55,515,95"/>
+<area shape="poly" title=" " alt="" coords="283,94,357,84,358,89,284,99"/>
+<area shape="rect" href="classAbstractMobileObj.html#ac82c9e2a9237684663e8083fc203be7d" title="Udostępnia współrzędne aktualnej pozycji obiektu." alt="" coords="371,119,515,159"/>
+<area shape="poly" title=" " alt="" coords="284,116,358,126,357,131,283,121"/>
+<area shape="rect" href="classAbstractMobileObj.html#abed1b4b44046c6f515ce1ded3607aefa" title="Zmienia współrzędne aktualnej pozycji obiektu." alt="" coords="371,183,515,223"/>
+<area shape="poly" title=" " alt="" coords="261,118,293,130,308,140,318,150,341,169,359,177,357,182,339,174,314,154,305,144,291,135,259,123"/>
+</map>
+</div>
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="main_8cpp.html">main.cpp</a></li>
+    <li class="footer">Wygenerowano Pn, 4 lis 2024 13:07:25 dla Interpreter programem <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

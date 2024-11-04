@@ -12,15 +12,15 @@ class Interp4Move : public AbstractInterp4Command {
     double _Distance_mm; // Długość trasy
 
   public:
-    Interp4Move();
+    Interp4Move() = default;
 
-    virtual const char* GetCmdName() const override;
-    virtual bool ExecCmd(AbstractScene &rScn, 
-                         const char *sMobObjName,
-                         AbstractComChannel &rComChann) override;
-    virtual bool ReadParams(std::istream &rStrm_CmdsList) override;
-    virtual void PrintCmd() const override;
-    virtual void PrintSyntax() const override;
+    const char* GetCmdName() const override;
+    bool ExecCmd(AbstractScene &rScn, 
+                        const char *sMobObjName,
+                        AbstractComChannel &rComChann) override;
+    bool ReadParams(std::istream &rStrm_CmdsList) override;
+    void PrintCmd() const override;
+    void PrintSyntax() const override;
 
     static AbstractInterp4Command* CreateCmd();
 };
