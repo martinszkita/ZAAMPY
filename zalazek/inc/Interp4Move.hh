@@ -15,12 +15,13 @@ class Interp4Move : public AbstractInterp4Command {
     Interp4Move() = default;
 
     const char* GetCmdName() const override;
-    bool ExecCmd(AbstractScene &rScn, 
-                        const char *sMobObjName,
-                        AbstractComChannel &rComChann) override;
+    bool ExecCmd(AbstractScene &rScn, const char *sMobObjName, AbstractComChannel &rComChann) override;
     bool ReadParams(std::istream &rStrm_CmdsList) override;
     void PrintCmd() const override;
     void PrintSyntax() const override;
+    void setRobotName(const char * _name) override;
+    const char * getRobotName() const override;
+    void set_speed_mmS(const double) ;
 
     static AbstractInterp4Command* CreateCmd();
 };

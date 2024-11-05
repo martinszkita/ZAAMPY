@@ -21,8 +21,19 @@
   * przez daną wtyczkę.
   */
   class AbstractInterp4Command {
+    protected:
+    const char * _robotName;
    public:
+   /*!
+      \brief Zwraca nazwe robota, na ktorym wykonywane jest polecenie
+   */
+    virtual const char * getRobotName() const = 0;
 
+    /*!
+        \brief Ustawia nazwe robota, na ktorym wykonywane jest polecenie
+    */
+    virtual void setRobotName(const char * _name) = 0;
+    
     virtual ~AbstractInterp4Command() {}
     
     /*!

@@ -30,6 +30,15 @@ obj/main.o: src/main.cpp inc/AbstractInterp4Command.hh inc/AbstractScene.hh\
 obj/ComChannel.o: src/ComChannel.cpp
 	$(CXX) -c $(CXXFLAGS) -o obj/ComChannel.o src/ComChannel.cpp
 
+obj/Interp4Command.o: src/Interp4Command.cpp
+	$(CXX) -c $(CXXFLAGS) -o obj/Interp4Command.o src/Interp4Command.cpp
+
+obj/Scene.o: src/Scene.cpp
+	$(CXX) -c $(CXXFLAGS) -o obj/Scene.o src/Scene.cpp
+
+obj/MobileObj.o: src/MobileObj.cpp
+	$(CXX) -c $(CXXFLAGS) -o obj/MobileObj.o src/MobileObj.cpp
+
 doc:
 	cd dox; make
 
