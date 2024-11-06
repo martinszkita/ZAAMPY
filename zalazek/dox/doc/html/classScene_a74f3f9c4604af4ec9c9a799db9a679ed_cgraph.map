@@ -1,5 +1,0 @@
-<map id="Scene::AddMobileObj" name="Scene::AddMobileObj">
-<area shape="rect" id="Node000001" title="Dodaje do sceny nowy obiekt." alt="" coords="5,13,160,38"/>
-<area shape="rect" id="Node000002" href="$classAbstractMobileObj.html#ae954ebaa828c4afecbcbe3fdd93e696b" title="Udostępnia nazwę obiektu. Udostępnia nazwę identyfikującą obiekt." alt="" coords="208,5,352,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,23,194,23,194,28,160,28"/>
-</map>

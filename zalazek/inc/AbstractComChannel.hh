@@ -21,7 +21,7 @@
     class AbstractComChannel {
      public:
 
-      virtual ~AbstractComChannel() = default;
+      virtual ~AbstractComChannel(){}
       
       /*!
        * \brief Inicjalizuje destryptor gniazda.

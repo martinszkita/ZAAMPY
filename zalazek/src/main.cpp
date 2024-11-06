@@ -3,10 +3,13 @@
 #include <dlfcn.h>
 #include <cassert>
 #include <sstream> 
-#include "AbstractInterp4Command.hh"
 #include "../plugin/inc/Interp4Move.hh"
+#include "MobileObj.hh"
 #include "Scene.hh"
 #include "ComChannel.hh"
+#include "AbstractInterp4Command.hh"
+#include "AbstractComChannel.hh"
+
 
 
 using namespace std;
@@ -48,7 +51,6 @@ int main()
   pCmd->PrintCmd();
   cout << endl;
 
-  //
   std::string command;
   while (std::getline(file, command)) {  // Czytanie linii z poleceniami
       std::istringstream iss(command);
@@ -62,9 +64,9 @@ int main()
           iss >> objectName >> speed >> distance;  // Odczyt nazwy obiektu, prędkości i odległości
 
           // Tworzymy instancję wtyczki Move
-          Interp4Move movePlugin;
-          movePlugin.SetSpeed(speed);  // Przykładowe ustawienie prędkości
-          movePlugin.SetDistance(distance);  // Przykładowe ustawienie odległości
+          Interp4Move movePlugin = Interp4Move();
+          movePlugin.setSpeed(speed);  // Przykładowe ustawienie prędkości
+          movePlugin.setDistance(distance);  // Przykładowe ustawienie odległości
 
 
           Scene scene;
@@ -74,8 +76,8 @@ int main()
           movePlugin.ExecCmd(scene, objectName.c_str(), comChannel);
       }
   }
-  //
-  
+ 
+
   delete pCmd;
 
   dlclose(pLibHnd_Move);

@@ -23,6 +23,9 @@ LDFLAGS=-Wall
 interp: obj/main.o
 	g++ ${LDFLAGS} -o interp  obj/main.o -ldl
 
+obj/Interp4Command.o: src/Interp4Command.cpp
+	$(CXX) -c $(CXXFLAGS) -o obj/Interp4Command.o src/Interp4Command.cpp
+
 obj/main.o: src/main.cpp inc/AbstractInterp4Command.hh inc/AbstractScene.hh\
             inc/AbstractComChannel.hh
 	g++ -c ${CPPFLAGS} -o obj/main.o src/main.cpp
@@ -30,8 +33,7 @@ obj/main.o: src/main.cpp inc/AbstractInterp4Command.hh inc/AbstractScene.hh\
 obj/ComChannel.o: src/ComChannel.cpp
 	$(CXX) -c $(CXXFLAGS) -o obj/ComChannel.o src/ComChannel.cpp
 
-obj/Interp4Command.o: src/Interp4Command.cpp
-	$(CXX) -c $(CXXFLAGS) -o obj/Interp4Command.o src/Interp4Command.cpp
+
 
 obj/Scene.o: src/Scene.cpp
 	$(CXX) -c $(CXXFLAGS) -o obj/Scene.o src/Scene.cpp
@@ -44,7 +46,6 @@ doc:
 
 clean:
 	rm -f obj/* interp core*
-
 
 clean_plugin:
 	cd plugin; make clean
@@ -72,4 +73,3 @@ help:
 	@echo "  make           # kompilacja i uruchomienie programu."
 	@echo "  make clean     # usuwa produkty kompilacji."
 	@echo
- 

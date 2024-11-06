@@ -1,9 +1,0 @@
-<map id="ComChannel.hh" name="ComChannel.hh">
-<area shape="rect" id="Node000001" title=" " alt="" coords="104,5,224,31"/>
-<area shape="rect" id="Node000002" href="$AbstractComChannel_8hh.html" title="Zawiera definicję klasy abstrakcyjnej AbstractComChannel." alt="" coords="5,79,176,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="154,33,114,71,111,67,150,29"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="201,79,277,104"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="178,29,218,67,215,71,174,33"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="60,152,121,177"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="93,104,93,138,88,138,88,104"/>
-</map>

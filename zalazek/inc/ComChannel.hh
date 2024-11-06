@@ -1,3 +1,5 @@
+#ifndef COMCHANNEL_HH
+#define COMCHANNEL_HH
 #include "AbstractComChannel.hh"
 #include <iostream>
 
@@ -16,3 +18,5 @@ public:
     void SendMoveCommand(const std::string& objectName, double speed, double distance);
 
 };
+
+#endif

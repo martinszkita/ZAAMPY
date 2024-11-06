@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Interp4Move.hh"
+#include "../inc/Interp4Move.hh"
 
 
 using std::cout;
@@ -11,14 +11,6 @@ extern "C" {
   const char* GetCmdName() { return "Move"; }
 }
 
-
-
-
-/*!
- * \brief
- *
- *
- */
 AbstractInterp4Command* CreateCmd(void)
 {
   return Interp4Move::CreateCmd();
@@ -37,11 +29,27 @@ Interp4Move::Interp4Move(): _Speed_mmS(0), _Distance_mm(0)
  */
 void Interp4Move::PrintCmd() const
 {
-
   cout << GetCmdName() << " " << _Speed_mmS  << " " <<_Distance_mm<<" "<< endl;
 }
 
-
+void Interp4Move::setRobotName(const char * _name){
+    _robotName = _name;
+}
+const char * Interp4Move::getRobotName() const{
+    return _robotName;
+}
+void Interp4Move::setSpeed(const double _speed){
+    _Speed_mmS = _speed;
+}
+void Interp4Move::setDistance(const double _distance){
+    _Distance_mm = _distance;
+}
+const double & Interp4Move::getSpeed() const{
+    return _Speed_mmS;
+}
+const double & Interp4Move::getDistance() const{
+    return _Distance_mm;
+}
 /*!
  *
  */
@@ -54,19 +62,8 @@ const char* Interp4Move::GetCmdName() const
 /*!
  *
  */
-bool Interp4Move::ExecCmd( AbstractScene      &rScn, 
-                           const char         *sMobObjName,
-			   AbstractComChannel &rComChann
-			 )
+bool Interp4Move::ExecCmd( AbstractScene &rScn, const char * sMobObjName,AbstractComChannel &rComChann)
 {
-  /*
-   *  Tu trzeba napisać odpowiedni kod :(((((((((((())))))))))))
-   1. find
-   2. get position
-   3. calculate new pos
-   4. set new pos
-   */
-
   AbstractMobileObj * pObj = rScn.FindMobileObj(sMobObjName);
 
   if (pObj == nullptr){
