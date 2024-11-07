@@ -1,3 +1,5 @@
+#ifndef MOBILEOBJ_HH
+#define MOBILEOBJ_HH
 #include "AbstractMobileObj.hh"
 #include "Vector3D.hh"
 
@@ -21,3 +23,5 @@ class MobileObj : public AbstractMobileObj {
     const std::string & GetName() const override;
     void SetName(const char* sName) override;
 };
+
+#endif

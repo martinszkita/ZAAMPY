@@ -9,11 +9,10 @@
 #include "ComChannel.hh"
 #include "AbstractInterp4Command.hh"
 #include "AbstractComChannel.hh"
-
-
+#include "AbstractScene.hh"
+#include "AbstractMobileObj.hh"
 
 using namespace std;
-
 
 int main()
 {
@@ -31,7 +30,6 @@ int main()
     cerr << "!!! Brak biblioteki: Interp4Move.so" << endl;
     return 1;
   }
-
 
   pFun = dlsym(pLibHnd_Move,"CreateCmd"); // uzyskanie wskaznika do obiektu w bibliotece
   if (!pFun) {

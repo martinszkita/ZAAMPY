@@ -26,14 +26,17 @@ interp: obj/main.o
 obj/Interp4Command.o: src/Interp4Command.cpp
 	$(CXX) -c $(CXXFLAGS) -o obj/Interp4Command.o src/Interp4Command.cpp
 
-obj/main.o: src/main.cpp inc/AbstractInterp4Command.hh inc/AbstractScene.hh\
-            inc/AbstractComChannel.hh
+# obj/main.o: src/main.cpp inc/AbstractInterp4Command.hh inc/AbstractScene.hh\
+#             inc/AbstractComChannel.hh
+# 	g++ -c ${CPPFLAGS} -o obj/main.o src/main.cpp
+
+obj/main.o: src/main.cpp inc/AbstractInterp4Command.hh inc/AbstractScene.hh \
+            inc/AbstractComChannel.hh plugin/inc/Interp4Move.hh
 	g++ -c ${CPPFLAGS} -o obj/main.o src/main.cpp
+
 
 obj/ComChannel.o: src/ComChannel.cpp
 	$(CXX) -c $(CXXFLAGS) -o obj/ComChannel.o src/ComChannel.cpp
-
-
 
 obj/Scene.o: src/Scene.cpp
 	$(CXX) -c $(CXXFLAGS) -o obj/Scene.o src/Scene.cpp
