@@ -60,6 +60,7 @@ int main()
           std::string objectName;
           double speed, distance;
           iss >> objectName >> speed >> distance;  // Odczyt nazwy obiektu, prędkości i odległości
+          std::cout << "odczytalem: "<< objectName <<" " << speed <<" "<< distance << std::endl;
 
           // Tworzymy instancję wtyczki Move
           Interp4Move movePlugin = Interp4Move();

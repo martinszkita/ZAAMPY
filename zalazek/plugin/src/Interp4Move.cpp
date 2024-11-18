@@ -8,7 +8,7 @@ using std::endl;
 
 extern "C" {
   AbstractInterp4Command* CreateCmd(void);
-  const char* GetCmdName() { return "Move"; }
+  const char* Interp4Move::GetCmdName() const { return "Move"; }
 }
 
 AbstractInterp4Command* CreateCmd(void)
@@ -53,10 +53,10 @@ const double & Interp4Move::getDistance() const{
 /*!
  *
  */
-const char* Interp4Move::GetCmdName() const
-{
-  return ::GetCmdName();
-}
+// const char* Interp4Move::GetCmdName() const
+// {
+//   return ::GetCmdName();
+// }
 
 
 /*!

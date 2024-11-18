@@ -37,8 +37,8 @@
      virtual void PrintParams() const = 0;
 
      /*!
-      * \brief Udostępnia nazwę polecenia
-      */
+    //   * \brief Udostępnia nazwę polecenia
+    //   */
      virtual const char* GetCmdName() const = 0;
      /*!
       * \brief Wykonuje polecenie oraz wizualizuje jego realizację
