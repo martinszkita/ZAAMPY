@@ -50,18 +50,7 @@ const double & Interp4Move::getSpeed() const{
 const double & Interp4Move::getDistance() const{
     return _Distance_mm;
 }
-/*!
- *
- */
-// const char* Interp4Move::GetCmdName() const
-// {
-//   return ::GetCmdName();
-// }
 
-
-/*!
- *
- */
 bool Interp4Move::ExecCmd( AbstractScene &rScn, const char * sMobObjName,AbstractComChannel &rComChann)
 {
   AbstractMobileObj * pObj = rScn.FindMobileObj(sMobObjName);
