@@ -26,8 +26,6 @@ const unsigned int & Interp4Pause::GetPauseTime() const{
 }
 
 
-
-
 // Setters
 // void Interp4Pause::SetRobotName(const std::string& name) {
 //     _robotName = name;

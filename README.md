@@ -1,2 +1,2 @@
 # ZAAMPY
-Zaawansowane Metody Programowania
+## Zaawansowane Metody Programowania
