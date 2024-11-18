@@ -15,12 +15,28 @@ bool ComChannel::Init(int Socket){
     }
 
     // Zamknięcie istniejącego deskryptora, jeśli jest ustawiony
-    if (fd != -1) {
-        close(fd);
+    if (socket != -1) {
+        close(socket);
     }
 
     // Przypisanie nowego deskryptora
-    fd = Socket;
-    std::cout << "Deskryptor połączenia ustawiony na: " << fd << std::endl;
+    socket = Socket;
+    std::cout << "Deskryptor połączenia ustawiony na: " << socket << std::endl;
     return true;
+}
+
+int ComChannel::GetSocket() const{
+    return socket;
+}
+
+void ComChannel::LockAccess(){
+    access_mutex.lock();
+}
+
+void ComChannel::UnlockAccess(){
+    access_mutex.unlock();
+}
+
+std::mutex & ComChannel::UseGuard() {
+    return access_mutex;
 }

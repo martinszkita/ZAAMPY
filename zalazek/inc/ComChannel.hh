@@ -2,9 +2,11 @@
 #define COMCHANNEL_HH
 #include "AbstractComChannel.hh"
 #include <iostream>
+#include <mutex>
 
 class ComChannel : public AbstractComChannel {
-    int fd;
+    int socket;
+    std::mutex access_mutex;
 public:
     ComChannel() = default;
     ~ComChannel() = default;

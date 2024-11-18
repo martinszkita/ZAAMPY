@@ -22,7 +22,7 @@ int main()
         return 1;
     }
 
-  void *pLibHnd_Move = dlopen("libInterp4Move.so",RTLD_LAZY); // ladowanie biblioteki dynamicznej
+  void *pLibHnd_Move = dlopen("libs/libInterp4Move.so",RTLD_LAZY); // ladowanie biblioteki dynamicznej
   AbstractInterp4Command *(*pCreateCmd_Move)(void);
   void *pFun;
 
