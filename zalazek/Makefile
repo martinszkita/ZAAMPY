@@ -1,6 +1,6 @@
 CXX = g++
-CXXFLAGS = -Wall -Iinc -Iplugin/inc
-LDFLAGS = -ldl
+CXXFLAGS = -std=c++20  -Wall -Iinc -Iplugin/inc -I/usr/include/xercesc 
+LDFLAGS = -ldl -lxerces-c
 
 # Directories
 SRC_DIR = src

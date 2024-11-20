@@ -1,0 +1,12 @@
+<Config>
+    <Plugins>
+        <Lib Name="libInter4Move.so"/>
+        <Lib Name="libInter4Rotate.so"/>
+        <Lib Name="libInter4Pause.so"/>
+    </Plugins>
+    <Objects>
+        <Cube Name="Base" Shift="0 -0.5 0" Scale="1 1 1" RotXYZ_deg="0 0 0" Trans_m="0 0 0" RGB="255 0 0"/>
+        <Cube Name="Base.Arm1" Shift="0 0.5 0" Scale="0.5 0.5 0.5" RotXYZ_deg="0 0 90" Trans_m="1 0 0" RGB="0 255 0"/>
+        <Cube Name="Base.Arm1.Arm2" Shift="0 1.0 0" Scale="0.3 0.3 0.3" RotXYZ_deg="0 90 0" Trans_m="1 1 0" RGB="0 0 255"/>
+    </Objects>
+</Config>
