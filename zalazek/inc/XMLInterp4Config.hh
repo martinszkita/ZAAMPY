@@ -8,6 +8,7 @@
 class XMLInterp4Config : public xercesc::DefaultHandler {
 public:
     XMLInterp4Config(Configuration &rConfig);
+    XMLInterp4Config();
 
     virtual void startDocument() override;
     virtual void endDocument() override;

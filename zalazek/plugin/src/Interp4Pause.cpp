@@ -11,10 +11,9 @@ extern "C" {
 
 Interp4Pause::Interp4Pause(): _pause_time_ms(0)/*,_robotName("")*/ {}
 
-// Getters
-// const std::string& Interp4Pause::GetRobotName() const {
-//     return _robotName;
-// }
+const std::string& Interp4Pause::GetRobotName() const {
+    return _robotName;
+}
 
 //void SetRobotName(const std::string& name){}
 void Interp4Pause::SetPauseTime(const unsigned int & _ms){
@@ -26,10 +25,9 @@ const unsigned int & Interp4Pause::GetPauseTime() const{
 }
 
 
-// Setters
-// void Interp4Pause::SetRobotName(const std::string& name) {
-//     _robotName = name;
-// }
+void Interp4Pause::SetRobotName(const std::string& name) {
+    _robotName = name;
+}
 
 void Interp4Pause::PrintCmd() const {
     std::cout << "Obecne polecenie:  " << GetCmdName() << std::endl;

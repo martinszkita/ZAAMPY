@@ -28,11 +28,11 @@ class Interp4Move: public AbstractInterp4Command {
    */
   double  _Speed_mmS;
   double  _Distance_mm;
-  const char * _robotName; //Nazwa robota dla ktorego wykonywane jest poleceni
+  std::string _robotName; //Nazwa robota dla ktorego wykonywane jest poleceni
  public:
 
-  void setRobotName(const char * _name);
-  const char * getRobotName() const;
+  void setRobotName(std::string _name);
+  std::string getRobotName() const;
   void setSpeed(const double _speed);
   void setDistance(const double distance);
   const double & getSpeed() const;

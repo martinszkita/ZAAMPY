@@ -21,9 +21,9 @@ class Interp4Pause: public AbstractInterp4Command{
         virtual void PrintParams() const override;
         static AbstractInterp4Command* CreateCmd();
 
-        //const std::string& GetRobotName() const;
+        const std::string& GetRobotName() const;
         const unsigned int & GetPauseTime() const;
-        //void SetRobotName(const std::string& name);
+        void SetRobotName(const std::string& name);
         void SetPauseTime(const unsigned int & _ms);
 };
 

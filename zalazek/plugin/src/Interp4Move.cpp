@@ -32,10 +32,13 @@ void Interp4Move::PrintCmd() const
   cout << GetCmdName() << " " << _Speed_mmS  << " " <<_Distance_mm<<" "<< endl;
 }
 
-void Interp4Move::setRobotName(const char * _name){
-    _robotName = _name;
+void Interp4Move::setRobotName(std::string _name) {
+    // const char* name_cstr = _name.c_str();  // Explicit conversion
+    _robotName = _name;                     // Assign std::string
 }
-const char * Interp4Move::getRobotName() const{
+
+
+std::string Interp4Move::getRobotName() const{
     return _robotName;
 }
 void Interp4Move::setSpeed(const double _speed){
@@ -83,6 +86,9 @@ bool Interp4Move::ExecCmd( AbstractScene &rScn, const char * sMobObjName,Abstrac
   pObj->SetPosition_m(newPosition);
 
   return true;
+}
+void Interp4Move::PrintParams() const{
+  std::cout << "Move " << getRobotName() << " " << getSpeed() << " " << getDistance() << std::endl;
 }
 
 

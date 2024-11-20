@@ -5,12 +5,12 @@
 #include <vector>
 
 struct Cube {
-    std::string name;
-    std::string shift;
-    std::string scale;
-    std::string rotXYZ;
-    std::string trans;
-    std::string color;
+    std::string name; // obowiązkowe pole
+    std::string shift = "0 0 0";
+    std::string scale = "1 1 1";
+    std::string rotXYZ = "0 0 0";
+    std::string trans_m = "0 0 0";
+    std::string color = "128 128 128";
 };
 
 struct Configuration {
