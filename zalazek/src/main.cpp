@@ -22,9 +22,28 @@
 #include <xercesc/sax/SAXParseException.hpp>
 #include <xercesc/sax2/SAX2XMLReader.hpp>
 #include <xercesc/sax2/XMLReaderFactory.hpp>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#include <cstring>
+#include <cerrno>
+// #include "../klient/inc/Port.hh"
+
+#define SERVER_IP "127.0.0.1"  // Serwer działa lokalnie
+#define PORT_NUMBER 6217
 
 using namespace std;
 using ::cout;
+
+int SendCommand(int socket, const std::string &command) {
+    ssize_t bytes_sent = send(socket, command.c_str(), command.size(), 0);
+    if (bytes_sent < 0) {
+        std::cerr << "Błąd wysyłania komendy: " << strerror(errno) << std::endl;
+        return -1;
+    }
+    return 0; // Sukces
+}
 
 int main(int argc, char **argv) {
     if (argc != 2) {
@@ -59,6 +78,40 @@ int main(int argc, char **argv) {
         xercesc::XMLString::release(&message);
         return 1;
     }
+    
+    // obsluga wczytywania pluginów wymienionych w configu
+    /* kroki do wczytania pluginu:
+        1.void * plugin= dlopen()
+        2.auto * pFun = dlsym()
+        3.auto *pCreateCmd<> = reinterpret_cast<AbstractInterp4Command* (*)(void)>(pFun);
+        4.AbstractInterp4Command *pCmd = pCreateCmd_<>();
+        5.delete pCmd;
+        6.dlclose(pLibHnd_Move); 
+    */
+    bool load_move_plugin = false;
+    bool load_rotate_plugin = false;
+    bool load_set_plugin = false;
+    bool load_pause_plugin = false;
+
+    unsigned int plugin_count = config.plugins.size();
+    void * dlopen_plugin_ptr[plugin_count];
+    void * dlsym_plugin_ptr[plugin_count];
+    
+    for (const auto & plugin : config.plugins){
+        if (plugin == "Interp4Move.so"){
+            load_move_plugin = true;
+        }
+        else if (plugin == "Interp4Rotate.so"){
+            load_rotate_plugin = true;
+        }
+        else if (plugin == "Interp4Set.so"){
+            load_set_plugin = true;
+        }
+        else if (plugin == "Interp4Pause.so"){
+            load_pause_plugin = true;
+        }
+    }
+
     // Ładowanie wtyczki Move
     void *pLibHnd_Move = dlopen("libs/Interp4Move.so", RTLD_LAZY);
     if (!pLibHnd_Move) {
@@ -88,6 +141,9 @@ int main(int argc, char **argv) {
         return 1;
     }
 
+    Scene scene;
+    ComChannel comChannel;
+
     std::string command;
     while (std::getline(file, command)) {
         std::istringstream iss(command);
@@ -106,9 +162,6 @@ int main(int argc, char **argv) {
             movePlugin.setSpeed(speed);
             movePlugin.setDistance(distance);
 
-            Scene scene;
-            ComChannel comChannel;
-
             movePlugin.ExecCmd(scene, objectName.c_str(), comChannel);
         }
 
@@ -126,8 +179,6 @@ int main(int argc, char **argv) {
             rotatePlugin.SetAngularVelocity(ang_speed);
             rotatePlugin.SetAngle(ang_deg);
 
-            Scene scene;
-            ComChannel comChannel;
 
             rotatePlugin.ExecCmd(scene, objectName.c_str(), comChannel);
         }
@@ -147,8 +198,6 @@ int main(int argc, char **argv) {
             setPlugin.SetRobotName(objectName);
             setPlugin.SetPosition(pos_vec_tmp);
 
-            Scene scene;
-            ComChannel comChannel;
 
             setPlugin.ExecCmd(scene, objectName.c_str(), comChannel);
         }
@@ -157,22 +206,60 @@ int main(int argc, char **argv) {
             std::string objectName;
             double wait_ms;
             iss >> objectName >> wait_ms;
-            
-
             cout << "Odczytano: " << objectName << " " << wait_ms << "\n";
     
             Interp4Pause rotatePlugin;
             rotatePlugin.SetRobotName(objectName);
             rotatePlugin.SetPauseTime(wait_ms);
 
-            Scene scene;
-            ComChannel comChannel;
 
             rotatePlugin.ExecCmd(scene, objectName.c_str(), comChannel);
         }
     }
+/*
+    // łączenie z serwerem
+int client_socket = socket(AF_INET, SOCK_STREAM, 0);
+if (client_socket < 0) {
+    cerr << "Błąd tworzenia gniazda!" << endl;
+    return -1;
+}
 
-    delete pCmd;
-    dlclose(pLibHnd_Move);
-    return 0;
+struct sockaddr_in server_address;
+server_address.sin_family = AF_INET;
+server_address.sin_port = htons(PORT); // Port serwera
+inet_pton(AF_INET, SERVER_IP, &server_address.sin_addr); // Adres serwera
+
+if (connect(client_socket, (struct sockaddr*)&server_address, sizeof(server_address)) < 0) {
+    cerr << "Błąd połączenia z serwerem!" << endl;
+    close(client_socket);
+    return -1;
+}
+
+cout << "Połączono z serwerem graficznym." << endl;
+
+// --- Wysłanie poleceń do serwera ---
+SendCommand(client_socket, "Clear\n");
+const auto& objects = scene.GetObjects();
+
+for (const auto& obj : objects) {
+    string command = "AddObj Name=" + obj.name;
+    if (!obj.scale.empty()) command += " Scale=(" + obj.scale + ")";
+    if (!obj.shift.empty()) command += " Shift=(" + obj.shift + ")";
+    if (!obj.rotation.empty()) command += " RotXYZ_deg=(" + obj.rotation + ")";
+    if (!obj.translation.empty()) command += " Trans_m=(" + obj.translation + ")";
+    if (!obj.color.empty()) command += " RGB=(" + obj.color + ")";
+    command += "\n";
+
+    SendCommand(client_socket, command);
+    cout << "Wysłano polecenie: " << command;
+}
+
+// --- Zamknięcie połączenia ---
+SendCommand(client_socket, "Close\n");
+close(client_socket);
+*/
+delete pCmd;
+dlclose(pLibHnd_Move);
+return 0;
+
 }
