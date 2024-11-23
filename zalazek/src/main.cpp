@@ -45,6 +45,17 @@ int SendCommand(int socket, const std::string &command) {
     return 0; // Sukces
 }
 
+void loadPlugins(const std::vector<std::string>& plugins) {
+    for (const auto& plugin : plugins) {
+        void* handle = dlopen(plugin.c_str(), RTLD_LAZY);
+        if (!handle) {
+            std::cerr << "Error loading plugin: " << plugin << " - " << dlerror() << std::endl;
+            throw std::runtime_error("Plugin load failed");
+        }
+        std::cout << "Loaded plugin: " << plugin << std::endl;
+    }
+}
+
 int main(int argc, char **argv) {
     if (argc != 2) {
         cerr << "Usage: " << argv[0] << " <config_file.xml>\n";
@@ -79,60 +90,47 @@ int main(int argc, char **argv) {
         return 1;
     }
     
-    // obsluga wczytywania pluginów wymienionych w configu
-    /* kroki do wczytania pluginu:
-        1.void * plugin= dlopen()
-        2.auto * pFun = dlsym()
-        3.auto *pCreateCmd<> = reinterpret_cast<AbstractInterp4Command* (*)(void)>(pFun);
-        4.AbstractInterp4Command *pCmd = pCreateCmd_<>();
-        5.delete pCmd;
-        6.dlclose(pLibHnd_Move); 
-    */
-    bool load_move_plugin = false;
-    bool load_rotate_plugin = false;
-    bool load_set_plugin = false;
-    bool load_pause_plugin = false;
+    vector<void*> libraryHandles; // Do przechowywania uchwytów bibliotek
+    vector<AbstractInterp4Command*> commands; // Do przechowywania obiektów wtyczek
 
-    unsigned int plugin_count = config.plugins.size();
-    void * dlopen_plugin_ptr[plugin_count];
-    void * dlsym_plugin_ptr[plugin_count];
-    
-    for (const auto & plugin : config.plugins){
-        if (plugin == "Interp4Move.so"){
-            load_move_plugin = true;
-        }
-        else if (plugin == "Interp4Rotate.so"){
-            load_rotate_plugin = true;
-        }
-        else if (plugin == "Interp4Set.so"){
-            load_set_plugin = true;
-        }
-        else if (plugin == "Interp4Pause.so"){
-            load_pause_plugin = true;
-        }
-    }
+    try {
+        // Ładowanie bibliotek dynamicznych
+        const vector<string> libraries = {
+            "libs/Interp4Move.so",
+            "libs/Interp4Rotate.so",
+            "libs/Interp4Pause.so",
+            "libs/Interp4Set.so"
+        };
 
-    // Ładowanie wtyczki Move
-    void *pLibHnd_Move = dlopen("libs/Interp4Move.so", RTLD_LAZY);
-    if (!pLibHnd_Move) {
-        cerr << "!!! Brak biblioteki: Interp4Move.so\n";
+        for (const auto& libName : libraries) {
+            cout << "\nfor:\n"<< libName <<endl;
+            void* pLibHnd = dlopen(libName.c_str(), RTLD_LAZY);
+            if (!pLibHnd) {
+                cerr << "!!! Brak biblioteki: " << libName << endl;
+                return 1;
+            }
+
+            auto* pFun = dlsym(pLibHnd, "CreateCmd");
+            if (!pFun) {
+                cerr << "!!! Nie znaleziono funkcji CreateCmd w bibliotece: " << libName << endl;
+                dlclose(pLibHnd);
+                return 1;
+            }
+
+            auto* pCreateCmd = reinterpret_cast<AbstractInterp4Command* (*)()>(pFun);
+            AbstractInterp4Command* pCmd = pCreateCmd();
+            commands.push_back(pCmd);
+            libraryHandles.push_back(pLibHnd);
+
+            cout << "Załadowano bibliotekę: " << libName << endl;
+        }
+
+
+    }catch (const exception& e) {
+        cerr << "Error: " << e.what() << endl;
         return 1;
     }
 
-    auto *pFun = dlsym(pLibHnd_Move, "CreateCmd");
-    if (!pFun) {
-        cerr << "!!! Nie znaleziono funkcji CreateCmd\n";
-        return 1;
-    }
-    auto *pCreateCmd_Move = reinterpret_cast<AbstractInterp4Command* (*)(void)>(pFun);
-
-    AbstractInterp4Command *pCmd = pCreateCmd_Move();
-
-    cout << "\nCommand Name: " << pCmd->GetCmdName() << "\n\n";
-    pCmd->PrintSyntax();
-    cout << "\n";
-    pCmd->PrintCmd();
-    cout << "\n";
 
     // Przetwarzanie poleceń z pliku XML
     std::ifstream file("polecenia.xml");
@@ -216,50 +214,11 @@ int main(int argc, char **argv) {
             rotatePlugin.ExecCmd(scene, objectName.c_str(), comChannel);
         }
     }
-/*
-    // łączenie z serwerem
-int client_socket = socket(AF_INET, SOCK_STREAM, 0);
-if (client_socket < 0) {
-    cerr << "Błąd tworzenia gniazda!" << endl;
-    return -1;
-}
 
-struct sockaddr_in server_address;
-server_address.sin_family = AF_INET;
-server_address.sin_port = htons(PORT); // Port serwera
-inet_pton(AF_INET, SERVER_IP, &server_address.sin_addr); // Adres serwera
+    for (auto& handle : libraryHandles) {
+        dlclose(handle);
+    }
 
-if (connect(client_socket, (struct sockaddr*)&server_address, sizeof(server_address)) < 0) {
-    cerr << "Błąd połączenia z serwerem!" << endl;
-    close(client_socket);
-    return -1;
-}
-
-cout << "Połączono z serwerem graficznym." << endl;
-
-// --- Wysłanie poleceń do serwera ---
-SendCommand(client_socket, "Clear\n");
-const auto& objects = scene.GetObjects();
-
-for (const auto& obj : objects) {
-    string command = "AddObj Name=" + obj.name;
-    if (!obj.scale.empty()) command += " Scale=(" + obj.scale + ")";
-    if (!obj.shift.empty()) command += " Shift=(" + obj.shift + ")";
-    if (!obj.rotation.empty()) command += " RotXYZ_deg=(" + obj.rotation + ")";
-    if (!obj.translation.empty()) command += " Trans_m=(" + obj.translation + ")";
-    if (!obj.color.empty()) command += " RGB=(" + obj.color + ")";
-    command += "\n";
-
-    SendCommand(client_socket, command);
-    cout << "Wysłano polecenie: " << command;
-}
-
-// --- Zamknięcie połączenia ---
-SendCommand(client_socket, "Close\n");
-close(client_socket);
-*/
-delete pCmd;
-dlclose(pLibHnd_Move);
 return 0;
 
 }

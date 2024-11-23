@@ -7,6 +7,16 @@ extern "C" {
   const char* Interp4Set::GetCmdName() const { return "Set"; }
 }
 
+AbstractInterp4Command* CreateCmd(void){
+    return Interp4Set::CreateCmd();
+}
+
+AbstractInterp4Command* Interp4Set::CreateCmd()
+{
+  return new Interp4Set();
+}
+
+
 Interp4Set::Interp4Set(): pos(Vector3D()), ang_x_deg(0), ang_y_deg(0), ang_z_deg(0) {}
 
 // Getters
@@ -95,7 +105,4 @@ void Interp4Set::PrintParams() const{
     std::cout << "kat_OZ: " << GetAngleZ() << std::endl;
 }
 
-AbstractInterp4Command* Interp4Set::CreateCmd()
-{
-  return new Interp4Set();
-}
+

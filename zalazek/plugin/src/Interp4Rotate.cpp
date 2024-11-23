@@ -8,6 +8,15 @@ extern "C" {
   const char* Interp4Rotate::GetCmdName() const { return "Rotate"; }
 }
 
+AbstractInterp4Command* CreateCmd(void) {
+    return Interp4Rotate::CreateCmd();
+}
+
+AbstractInterp4Command* Interp4Rotate::CreateCmd()
+{
+  return new Interp4Rotate();
+}
+
 Interp4Rotate::Interp4Rotate()
     : _robotName(""), _axis('Z'), _angularVelocity(0.0), _angle(0.0) {}
 
@@ -109,6 +118,4 @@ void Interp4Rotate::PrintParams() const {
     std::cout << "  Angle of Rotation : " << GetAngle() << " deg" << std::endl;
 }
 
-AbstractInterp4Command* Interp4Rotate::CreateCmd() {
-    return new Interp4Rotate();
-}
+

@@ -9,6 +9,15 @@ extern "C" {
   const char* Interp4Pause::GetCmdName() const { return "Pause"; }
 }
 
+AbstractInterp4Command* CreateCmd(void) {
+    return Interp4Pause::CreateCmd();
+}
+
+AbstractInterp4Command* Interp4Pause::CreateCmd()
+{
+  return new Interp4Pause();
+}
+
 Interp4Pause::Interp4Pause(): _pause_time_ms(0)/*,_robotName("")*/ {}
 
 const std::string& Interp4Pause::GetRobotName() const {
@@ -23,7 +32,6 @@ void Interp4Pause::SetPauseTime(const unsigned int & _ms){
 const unsigned int & Interp4Pause::GetPauseTime() const{
     return _pause_time_ms;
 }
-
 
 void Interp4Pause::SetRobotName(const std::string& name) {
     _robotName = name;
@@ -62,7 +70,4 @@ void Interp4Pause::PrintParams() const{
     std::cout << "pause_time_ms: " << GetPauseTime()<< std::endl;
 }
 
-AbstractInterp4Command* Interp4Pause::CreateCmd()
-{
-  return new Interp4Pause();
-}
+
