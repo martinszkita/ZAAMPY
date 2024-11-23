@@ -36,15 +36,6 @@
 using namespace std;
 using ::cout;
 
-int SendCommand(int socket, const std::string &command) {
-    ssize_t bytes_sent = send(socket, command.c_str(), command.size(), 0);
-    if (bytes_sent < 0) {
-        std::cerr << "Błąd wysyłania komendy: " << strerror(errno) << std::endl;
-        return -1;
-    }
-    return 0; // Sukces
-}
-
 void loadPlugins(const std::vector<std::string>& plugins) {
     for (const auto& plugin : plugins) {
         void* handle = dlopen(plugin.c_str(), RTLD_LAZY);
@@ -64,32 +55,9 @@ int main(int argc, char **argv) {
 
     // Wczytywanie konfiguracji XML
     const char *configFileName = argv[1];
-    Configuration config;
+    Configuration config = XMLInterp4Config::redConfigurationFromXML(configFileName);
 
-    try {
-        xercesc::XMLPlatformUtils::Initialize();
 
-        // Tworzenie parsera SAX2
-        xercesc::SAX2XMLReader* parser = xercesc::XMLReaderFactory::createXMLReader();
-        XMLInterp4Config handler(config);
-
-        // Konfiguracja parsera
-        parser->setContentHandler(&handler);
-        parser->setErrorHandler(&handler);
-
-        std::cout << "Parsing configuration file: " << configFileName << "\n";
-        parser->parse(configFileName);
-
-        
-        delete parser;
-        xercesc::XMLPlatformUtils::Terminate();
-    } catch (const xercesc::XMLException &e) {
-        char *message = xercesc::XMLString::transcode(e.getMessage());
-        std::cerr << "XML Parsing error: " << message << "\n";
-        xercesc::XMLString::release(&message);
-        return 1;
-    }
-    
     vector<void*> libraryHandles; // Do przechowywania uchwytów bibliotek
     vector<AbstractInterp4Command*> commands; // Do przechowywania obiektów wtyczek
 
@@ -142,6 +110,8 @@ int main(int argc, char **argv) {
     Scene scene;
     ComChannel comChannel;
 
+    
+
     std::string command;
     while (std::getline(file, command)) {
         std::istringstream iss(command);
@@ -176,8 +146,6 @@ int main(int argc, char **argv) {
             rotatePlugin.SetAxis(axis);
             rotatePlugin.SetAngularVelocity(ang_speed);
             rotatePlugin.SetAngle(ang_deg);
-
-
             rotatePlugin.ExecCmd(scene, objectName.c_str(), comChannel);
         }
 
@@ -195,8 +163,6 @@ int main(int argc, char **argv) {
             Interp4Set setPlugin;
             setPlugin.SetRobotName(objectName);
             setPlugin.SetPosition(pos_vec_tmp);
-
-
             setPlugin.ExecCmd(scene, objectName.c_str(), comChannel);
         }
 
@@ -209,8 +175,6 @@ int main(int argc, char **argv) {
             Interp4Pause rotatePlugin;
             rotatePlugin.SetRobotName(objectName);
             rotatePlugin.SetPauseTime(wait_ms);
-
-
             rotatePlugin.ExecCmd(scene, objectName.c_str(), comChannel);
         }
     }

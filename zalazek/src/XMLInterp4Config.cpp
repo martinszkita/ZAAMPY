@@ -1,4 +1,7 @@
 #include "XMLInterp4Config.hh"
+#include <xercesc/util/PlatformUtils.hpp>
+#include <xercesc/sax2/SAX2XMLReader.hpp>
+#include <xercesc/sax2/XMLReaderFactory.hpp>
 #include <xercesc/util/XMLString.hpp>
 #include <xercesc/sax2/Attributes.hpp>
 #include <iostream>
@@ -99,5 +102,36 @@ void XMLInterp4Config::ProcessCubeAttrs(const Attributes &rAttrs) {
 
     _config.cubes.push_back(cube);
     std::cout << "Loaded cube: " << cube.name << "\n";
+}
+
+Configuration XMLInterp4Config::redConfigurationFromXML(const char * fileName){
+        Configuration config;
+
+        try {
+        xercesc::XMLPlatformUtils::Initialize();
+
+        // Tworzenie parsera SAX2
+        xercesc::SAX2XMLReader* parser = xercesc::XMLReaderFactory::createXMLReader();
+        XMLInterp4Config handler(config);
+
+        // Konfiguracja parsera
+        parser->setContentHandler(&handler);
+        parser->setErrorHandler(&handler);
+
+        std::cout << "Parsing configuration file: " << fileName << "\n";
+        parser->parse(fileName);
+
+        
+        delete parser;
+        xercesc::XMLPlatformUtils::Terminate();
+
+    } catch (const xercesc::XMLException &e) {
+        char *message = xercesc::XMLString::transcode(e.getMessage());
+        std::cerr << "XML Parsing error: " << message << "\n";
+        xercesc::XMLString::release(&message);
+        return config;
+    }
+
+    return config;
 }
 

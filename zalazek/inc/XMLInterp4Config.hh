@@ -21,6 +21,7 @@ public:
                             const XMLCh *const pQName) override;
 
     void fatalError(const xercesc::SAXParseException &exception) override;
+    static Configuration redConfigurationFromXML(const char * fileName);
 
 private:
     Configuration &_config;
