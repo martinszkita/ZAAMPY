@@ -10,10 +10,13 @@
 #define SCENE_HH
 
 #include "AbstractScene.hh"
+#include "AccessControl.hh"
 #include "AbstractMobileObj.hh"
+#include "GeomObject.hh"
 #include <string>
 #include <map>
 #include <memory>
+#include <vector>
 
 /*!
  * \class Scene
@@ -23,14 +26,23 @@
  * i umożliwia ich wyszukiwanie oraz zarządzanie. Klasa implementuje interfejs
  * \link AbstractScene AbstractScene \endlink.
  */
-class Scene : public AbstractScene {
+class Scene : public AbstractScene, public AccessControl {
 public:
+  /*!
+   * \brief Prosta kolekcja obiektów sceny
+   */
+   std::vector<GeomObject>   _Container4Objects;
     /*!
      * \brief Konstruktor domyślny klasy Scene.
      *
      * Inicjalizuje pustą scenę.
      */
-    Scene();
+    Scene(): _Container4Objects(3)
+    {
+      _Container4Objects[0].SetCmds(Cmds4Obj1);
+      _Container4Objects[1].SetCmds(Cmds4Obj2);
+      _Container4Objects[2].SetCmds(Cmds4Obj3);
+    }
 
     /*!
      * \brief Destruktor klasy Scene.

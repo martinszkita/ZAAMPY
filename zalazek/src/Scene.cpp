@@ -1,7 +1,7 @@
 #include "Scene.hh"
 
 // Konstruktor domyślny
-Scene::Scene() = default;
+
 
 // Destruktor
 Scene::~Scene() = default;
