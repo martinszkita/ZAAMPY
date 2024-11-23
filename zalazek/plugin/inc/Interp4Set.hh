@@ -1,3 +1,13 @@
+/*!
+ * \file Interp4Set.hh
+ * \brief Definicja klasy Interp4Set
+ *
+ * Plik zawiera definicję klasy \link Interp4Set Interp4Set \endlink,
+ * która implementuje polecenie ustawienia pozycji i orientacji obiektu.
+ * Klasa dziedziczy po \link AbstractInterp4Command AbstractInterp4Command \endlink
+ * i realizuje jego interfejs.
+ */
+
 #ifndef INTERP4SET__HH
 #define INTERP4SET__HH
 
@@ -11,37 +21,163 @@
 #include <string>
 #include <sstream>
 
-class Interp4Set: public AbstractInterp4Command{
+/*!
+ * \class Interp4Set
+ * \brief Klasa implementująca polecenie ustawienia pozycji i orientacji obiektu mobilnego.
+ *
+ * Klasa \link Interp4Set Interp4Set \endlink umożliwia ustawienie pozycji w przestrzeni 3D
+ * oraz orientacji obiektu mobilnego w scenie.
+ */
+class Interp4Set : public AbstractInterp4Command {
+private:
+    /*!
+     * \brief Nazwa obiektu mobilnego, którego dotyczy polecenie.
+     */
     std::string _robotName;
+
+    /*!
+     * \brief Współrzędne pozycji obiektu w przestrzeni 3D.
+     */
     Vector3D pos;
+
+    /*!
+     * \brief Kąt obrotu wokół osi X w stopniach.
+     */
     double ang_x_deg;
+
+    /*!
+     * \brief Kąt obrotu wokół osi Y w stopniach.
+     */
     double ang_y_deg;
+
+    /*!
+     * \brief Kąt obrotu wokół osi Z w stopniach.
+     */
     double ang_z_deg;
 
-    public:
-        Interp4Set();
-        virtual void PrintCmd() const override;
-        virtual const char* GetCmdName() const override;
-        virtual bool ExecCmd( AbstractScene&rScn, const char *sMobObjName, AbstractComChannel &rComChann ) override;
-        virtual bool ReadParams(std::istream& strm) override;
-        virtual void PrintSyntax() const override;
-        virtual void PrintParams() const override;
-        static AbstractInterp4Command* CreateCmd();
+public:
+    /*!
+     * \brief Konstruktor domyślny klasy Interp4Set.
+     */
+    Interp4Set();
 
-        const std::string& GetRobotName() const;
-        const Vector3D& GetPosition() const;
-        double GetAngleX() const;
-        double GetAngleY() const;
-        double GetAngleZ() const;
+    /*!
+     * \brief Wypisuje komendę w formacie tekstowym.
+     */
+    virtual void PrintCmd() const override;
 
-        // Setters
-        void SetRobotName(const std::string& name);
-        void SetPosition(const Vector3D& position);
-        void SetAngleX(double value);
-        void SetAngleY(double value);
-        void SetAngleZ(double value);
+    /*!
+     * \brief Pobiera nazwę komendy.
+     *
+     * \return Ciąg znaków reprezentujący nazwę komendy.
+     */
+    virtual const char* GetCmdName() const override;
 
+    /*!
+     * \brief Wykonuje polecenie ustawienia pozycji i orientacji obiektu.
+     *
+     * Realizuje ustawienie pozycji i orientacji dla zadanego obiektu mobilnego w scenie.
+     * \param[in] rScn - Referencja do sceny.
+     * \param[in] sMobObjName - Nazwa obiektu mobilnego.
+     * \param[in] rComChann - Kanał komunikacyjny.
+     * \return true, jeśli polecenie wykonano pomyślnie; false w przeciwnym razie.
+     */
+    virtual bool ExecCmd(AbstractScene &rScn, const char *sMobObjName, AbstractComChannel &rComChann) override;
 
+    /*!
+     * \brief Wczytuje parametry polecenia z wejściowego strumienia.
+     *
+     * \param[in] strm - Strumień wejściowy zawierający parametry.
+     * \return true, jeśli parametry wczytano poprawnie; false w przeciwnym razie.
+     */
+    virtual bool ReadParams(std::istream& strm) override;
+
+    /*!
+     * \brief Wypisuje składnię komendy.
+     */
+    virtual void PrintSyntax() const override;
+
+    /*!
+     * \brief Wypisuje aktualne parametry komendy.
+     */
+    virtual void PrintParams() const override;
+
+    /*!
+     * \brief Tworzy nową instancję komendy Interp4Set.
+     *
+     * \return Wskaźnik na nową instancję klasy Interp4Set.
+     */
+    static AbstractInterp4Command* CreateCmd();
+
+    /*!
+     * \brief Pobiera nazwę robota.
+     *
+     * \return Referencja do nazwy robota.
+     */
+    const std::string& GetRobotName() const;
+
+    /*!
+     * \brief Pobiera współrzędne pozycji obiektu.
+     *
+     * \return Referencja do wektora pozycji.
+     */
+    const Vector3D& GetPosition() const;
+
+    /*!
+     * \brief Pobiera kąt obrotu wokół osi X.
+     *
+     * \return Kąt w stopniach.
+     */
+    double GetAngleX() const;
+
+    /*!
+     * \brief Pobiera kąt obrotu wokół osi Y.
+     *
+     * \return Kąt w stopniach.
+     */
+    double GetAngleY() const;
+
+    /*!
+     * \brief Pobiera kąt obrotu wokół osi Z.
+     *
+     * \return Kąt w stopniach.
+     */
+    double GetAngleZ() const;
+
+    /*!
+     * \brief Ustawia nazwę robota.
+     *
+     * \param[in] name - Nazwa robota.
+     */
+    void SetRobotName(const std::string& name);
+
+    /*!
+     * \brief Ustawia współrzędne pozycji obiektu.
+     *
+     * \param[in] position - Wektor pozycji w przestrzeni 3D.
+     */
+    void SetPosition(const Vector3D& position);
+
+    /*!
+     * \brief Ustawia kąt obrotu wokół osi X.
+     *
+     * \param[in] value - Kąt w stopniach.
+     */
+    void SetAngleX(double value);
+
+    /*!
+     * \brief Ustawia kąt obrotu wokół osi Y.
+     *
+     * \param[in] value - Kąt w stopniach.
+     */
+    void SetAngleY(double value);
+
+    /*!
+     * \brief Ustawia kąt obrotu wokół osi Z.
+     *
+     * \param[in] value - Kąt w stopniach.
+     */
+    void SetAngleZ(double value);
 };
 
 #endif
