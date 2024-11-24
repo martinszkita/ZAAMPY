@@ -20,8 +20,6 @@
 #include "StateNumber.hh"
 
 
-
-
 /*!
  * Zestaw poleceń odpowiadających kolejnym stanom obiektu nr 1
  * i obrazujących jego ruch.
