@@ -1,6 +1,7 @@
 #pragma once
 
-#include "States.hh"
+#include "StateNumber.hh"
+
 /*!
  * \brief Ta klasa trochę udaję klasę MobileObj, która jest w zadaniu.
  *

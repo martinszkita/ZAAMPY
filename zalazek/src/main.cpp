@@ -28,10 +28,9 @@
 #include <unistd.h>
 #include <cstring>
 #include <cerrno>
-// #include "../klient/inc/Port.hh"
+#include "Port.hh"
 
 #define SERVER_IP "127.0.0.1"  // Serwer działa lokalnie
-#define PORT_NUMBER 6217
 
 using namespace std;
 using ::cout;
