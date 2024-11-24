@@ -49,7 +49,7 @@ class Sender {
    * \brief Inicjalizuje obiekt deskryptorem gniazda i wskaźnikiem
    *        na scenę, na zmianę stanu które będzie ten obiekt reagował.
    */
-   Sender(int Socket, Scene *pScn): _Socket(Socket), _pScn(pScn) {}
+   Sender(int Socket, Scene *pScn);
 
   /*!
    * \brief Sprawdza, czy pętla wątku może być wykonywana.
@@ -58,14 +58,14 @@ class Sender {
    * \retval true - pętla wątku może być nadal wykonywana.
    * \retval false - w przypadku przeciwnym.
    */
-   bool ShouldCountinueLooping() const { return _ContinueLooping; }
+   bool ShouldCountinueLooping() const;
   /*!
    * \brief Powoduje przerwanie działania pętli wątku.
    *
    * Powoduje przerwanie działania pętli wątku.
    * \warning Reakcja na tę operację nie będize natychmiastowa.
    */  
-   void CancelCountinueLooping() { _ContinueLooping = false; }
+   void CancelCountinueLooping();
 
   /*!
    * \brief Ta metoda jest de facto treścią wątku komunikacyjnego
@@ -75,24 +75,7 @@ class Sender {
    * \param[in] Socket - deskryptor gniazda sieciowego, poprzez które
    *                     wysyłane są polecenia.
    */
-   void Watching_and_Sending() {
-     while (ShouldCountinueLooping()) {
-       if (!_pScn->IsChanged())  { usleep(10000); continue; }
-       _pScn->LockAccess();
-       
-       //------- Przeglądanie tej kolekcji to uproszczony przykład
-       
-       for (const GeomObject &rObj : _pScn->_Container4Objects) {
-                                     // Ta instrukcja to tylko uproszczony przykład
-	 cout << rObj.GetStateDesc();
-         Send(_Socket,rObj.GetStateDesc()); // Tu musi zostać wywołanie odpowiedniej
-                                           // metody/funkcji gerującej polecenia dla serwera.
-       }
-       
-       _pScn->CancelChange();
-       _pScn->UnlockAccess();
-     }
-   }
+   void Watching_and_Sending();
   
 };
 
@@ -105,20 +88,8 @@ class Sender {
  * \param[in] sMesg - zawiera napis, który ma zostać wysłany poprzez
  *                    gniazdo sieciowe.
  */
-int Send(int Sk2Server, const char *sMesg)
-{
-  ssize_t  IlWyslanych;
-  ssize_t  IlDoWyslania = (ssize_t) strlen(sMesg);
+int Send(int Sk2Server, const char *sMesg);
 
-  while ((IlWyslanych = write(Sk2Server,sMesg,IlDoWyslania)) > 0) {
-    IlDoWyslania -= IlWyslanych;
-    sMesg += IlWyslanych;
-  }
-  if (IlWyslanych < 0) {
-    cerr << "*** Blad przeslania napisu." << endl;
-  }
-  return 0;
-}
 
 
 /*!
@@ -129,10 +100,8 @@ int Send(int Sk2Server, const char *sMesg)
  *                      i przesyłanie do serwera graficznego
  *                      aktualnego stanu sceny, gdy uległ on zmianie.
  */
-void Fun_CommunicationThread(Sender  *pSender)
-{
-  pSender->Watching_and_Sending();
-}
+void Fun_CommunicationThread(Sender  *pSender);
+
 
 
 /*!
@@ -140,34 +109,7 @@ void Fun_CommunicationThread(Sender  *pSender)
  * \param[out]  rSocket - deskryptor gniazda, poprzez które może być
  *                        realizowana komunikacja sieciowa.
  */
-bool OpenConnection(int &rSocket)
-{
-  struct sockaddr_in  DaneAdSerw;
-
-  bzero((char *)&DaneAdSerw,sizeof(DaneAdSerw));
-
-  DaneAdSerw.sin_family = AF_INET;
-  DaneAdSerw.sin_addr.s_addr = inet_addr("127.0.0.1");
-  DaneAdSerw.sin_port = htons(PORT);
-
-
-  rSocket = socket(AF_INET,SOCK_STREAM,0);
-
-  if (rSocket < 0) {
-     cerr << "*** Blad otwarcia gniazda." << endl;
-     return false;
-  }
-
-  if (connect(rSocket,(struct sockaddr*)&DaneAdSerw,sizeof(DaneAdSerw)) < 0)
-   {
-     cerr << "*** Brak mozliwosci polaczenia do portu: " << PORT << endl;
-     return false;
-   }
-  return true;
-}
-
-
-
+bool OpenConnection(int &rSocket);
 
 /*!
  * \brief Przykład wykonywania pojedynczej operacji z animacją.
@@ -181,21 +123,7 @@ bool OpenConnection(int &rSocket)
  * \retval true - Jeśli dokonan zosała zmiana stanu wszystkich obiektów.
  * \retval false - w przypadku przeciwnym.
  */
-bool ChangeState(Scene &Scn) //GeomObject *pObj, AccessControl  *pAccCtrl)
-{
-  bool Changed;
+bool ChangeState(Scene &Scn); //GeomObject *pObj, AccessControl  *pAccCtrl)
 
-  while (true) {
-    Scn.LockAccess(); // Zamykamy dostęp do sceny, gdy wykonujemy
-                            // modyfikacje na obiekcie.
-    for (GeomObject &rObj : Scn._Container4Objects) {
-       if (!(Changed = rObj.IncStateIndex())) { Scn.UnlockAccess();  return false; }
-    }
-    Scn.MarkChange();
-    Scn.UnlockAccess();
-    usleep(300000);
-  }
-  return true;
-}
 
 

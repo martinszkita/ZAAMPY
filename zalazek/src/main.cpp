@@ -28,9 +28,12 @@
 #include <unistd.h>
 #include <cstring>
 #include <cerrno>
+#include <thread>
 #include "Port.hh"
+#include "Sender.hh"
 
-#define SERVER_IP "127.0.0.1"  // Serwer działa lokalnie
+// #define SERVER_IP "127.0.0.1"  // Serwer działa lokalnie
+
 
 using namespace std;
 using ::cout;
@@ -60,6 +63,7 @@ int main(int argc, char **argv) {
     vector<void*> libraryHandles; // Do przechowywania uchwytów bibliotek
     vector<AbstractInterp4Command*> commands; // Do przechowywania obiektów wtyczek
 
+    // na razie ladowanie wszystkich bibliotek na sztywno
     try {
         // Ładowanie bibliotek dynamicznych
         const vector<string> libraries = {
@@ -70,7 +74,6 @@ int main(int argc, char **argv) {
         };
 
         for (const auto& libName : libraries) {
-            cout << "\nfor:\n"<< libName <<endl;
             void* pLibHnd = dlopen(libName.c_str(), RTLD_LAZY);
             if (!pLibHnd) {
                 cerr << "!!! Brak biblioteki: " << libName << endl;
@@ -98,6 +101,45 @@ int main(int argc, char **argv) {
         return 1;
     }
 
+    // incjalizacja połączenia z serwerem
+    Scene scene;
+    int Socket4Sending;
+
+    if (!OpenConnection(Socket4Sending)) return 1;
+
+    Sender   ClientSender(Socket4Sending,&scene);
+
+    std::thread   Thread4Sending(Fun_CommunicationThread,&ClientSender);
+
+    const char *sConfigCmds =
+        "Clear\n"
+        "AddObj Name=Podstawa1 RGB=(20,200,200) Scale=(4,2,1) Shift=(0.5,0,0) RotXYZ_deg=(0,-45,20) Trans_m=(-1,3,0)\n"
+        "AddObj Name=Podstawa1.Ramie1 RGB=(200,0,0) Scale=(3,3,1) Shift=(0.5,0,0) RotXYZ_deg=(0,-45,0) Trans_m=(4,0,0)\n"
+        "AddObj Name=Podstawa1.Ramie1.Ramie2 RGB=(100,200,0) Scale=(2,2,1) Shift=(0.5,0,0) RotXYZ_deg=(0,-45,0) Trans_m=(3,0,0)\n"       
+        "AddObj Name=Podstawa2 RGB=(20,200,200) Scale=(4,2,1) Shift=(0.5,0,0) RotXYZ_deg=(0,-45,0) Trans_m=(-1,-3,0)\n"
+        "AddObj Name=Podstawa2.Ramie1 RGB=(200,0,0) Scale=(3,3,1) Shift=(0.5,0,0) RotXYZ_deg=(0,-45,0) Trans_m=(4,0,0)\n"
+        "AddObj Name=Podstawa2.Ramie1.Ramie2 RGB=(100,200,0) Scale=(2,2,1) Shift=(0.5,0,0) RotXYZ_deg=(0,-45,0) Trans_m=(3,0,0)\n";
+
+    cout << "Konfiguracja:" << endl;
+
+    Send(Socket4Sending,sConfigCmds); // wlasciwe wyslanie w koncu
+
+    cout << "Akcja:" << endl;  
+      
+  for (GeomObject &rObj : scene._Container4Objects) {
+    usleep(20000);
+    ChangeState(scene);
+    scene.MarkChange();
+    usleep(100000);
+  }
+  usleep(100000);
+
+  cout << "Close\n" << endl; // To tylko, aby pokazac wysylana instrukcje
+  Send(Socket4Sending,"Close\n");
+  ClientSender.CancelCountinueLooping();
+  Thread4Sending.join();
+  close(Socket4Sending);
+
 
     // Przetwarzanie poleceń z pliku XML
     std::ifstream file("polecenia.xml");
@@ -106,10 +148,8 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    Scene scene;
-    ComChannel comChannel;
-
     
+    ComChannel comChannel;
 
     std::string command;
     while (std::getline(file, command)) {
