@@ -38,20 +38,20 @@
 using namespace std;
 using ::cout;
 
-void loadPlugins(const std::vector<std::string>& plugins) {
-    for (const auto& plugin : plugins) {
-        void* handle = dlopen(plugin.c_str(), RTLD_LAZY);
-        if (!handle) {
-            std::cerr << "Error loading plugin: " << plugin << " - " << dlerror() << std::endl;
-            throw std::runtime_error("Plugin load failed");
-        }
-        std::cout << "Loaded plugin: " << plugin << std::endl;
-    }
-}
+// void loadPlugins(const std::vector<std::string>& plugins) {
+//     for (const auto& plugin : plugins) {
+//         void* handle = dlopen(plugin.c_str(), RTLD_LAZY);
+//         if (!handle) {
+//             std::cerr << "Error loading plugin: " << plugin << " - " << dlerror() << std::endl;
+//             throw std::runtime_error("Plugin load failed");
+//         }
+//         std::cout << "Loaded plugin: " << plugin << std::endl;
+//     }
+// }
 
 int main(int argc, char **argv) {
-    if (argc != 2) {
-        cerr << "Usage: " << argv[0] << " <config_file.xml>\n";
+    if (argc != 3) {
+        cerr << "Usage: " << argv[0] << " <config_file.xml>" << "<instructions_file.xml>" << endl;
         return 1;
     }
 
@@ -59,6 +59,7 @@ int main(int argc, char **argv) {
     const char *configFileName = argv[1];
     Configuration config = XMLInterp4Config::redConfigurationFromXML(configFileName);
 
+    const char *instructionFile = argv[2];
 
     vector<void*> libraryHandles; // Do przechowywania uchwytów bibliotek
     vector<AbstractInterp4Command*> commands; // Do przechowywania obiektów wtyczek
@@ -111,38 +112,38 @@ int main(int argc, char **argv) {
 
     std::thread   Thread4Sending(Fun_CommunicationThread,&ClientSender);
 
-    const char *sConfigCmds =
-        "Clear\n"
-        "AddObj Name=Podstawa1 RGB=(20,200,200) Scale=(4,2,1) Shift=(0.5,0,0) RotXYZ_deg=(0,-45,20) Trans_m=(-1,3,0)\n"
-        "AddObj Name=Podstawa1.Ramie1 RGB=(200,0,0) Scale=(3,3,1) Shift=(0.5,0,0) RotXYZ_deg=(0,-45,0) Trans_m=(4,0,0)\n"
-        "AddObj Name=Podstawa1.Ramie1.Ramie2 RGB=(100,200,0) Scale=(2,2,1) Shift=(0.5,0,0) RotXYZ_deg=(0,-45,0) Trans_m=(3,0,0)\n"       
-        "AddObj Name=Podstawa2 RGB=(20,200,200) Scale=(4,2,1) Shift=(0.5,0,0) RotXYZ_deg=(0,-45,0) Trans_m=(-1,-3,0)\n"
-        "AddObj Name=Podstawa2.Ramie1 RGB=(200,0,0) Scale=(3,3,1) Shift=(0.5,0,0) RotXYZ_deg=(0,-45,0) Trans_m=(4,0,0)\n"
-        "AddObj Name=Podstawa2.Ramie1.Ramie2 RGB=(100,200,0) Scale=(2,2,1) Shift=(0.5,0,0) RotXYZ_deg=(0,-45,0) Trans_m=(3,0,0)\n";
-
-    cout << "Konfiguracja:" << endl;
+    const char *sConfigCmds = "AddObj Name=TESTdupa\n"
+    "Clear\n"
+    "AddObj Name=Podstawa1 RGB=(0,0,0) Scale=(4,2,1) Shift=(0.5,0,0) RotXYZ_deg=(0,-45,20) Trans_m=(-1,3,0)\n"
+    "AddObj Name=Podstawa1.Ramie1 RGB=(0,0,0) Scale=(3,3,1) Shift=(0.5,0,0) RotXYZ_deg=(0,-45,0) Trans_m=(4,0,0)\n"
+    "AddObj Name=Podstawa1.Ramie1.Ramie2 RGB=(0,0,0) Scale=(2,2,1) Shift=(0.5,0,0) RotXYZ_deg=(0,-45,0) Trans_m=(3,0,0)\n";     
+    // "AddObj Name=Podstawa2 RGB=(20,200,200) Scale=(4,2,1) Shift=(0.5,0,0) RotXYZ_deg=(0,-45,0) Trans_m=(-1,-3,0)\n"
+    // "AddObj Name=Podstawa2.Ramie1 RGB=(200,0,0) Scale=(3,3,1) Shift=(0.5,0,0) RotXYZ_deg=(0,-45,0) Trans_m=(4,0,0)\n"
+    // "AddObj Name=Podstawa2.Ramie1.Ramie2 RGB=(100,200,0) Scale=(2,2,1) Shift=(0.5,0,0) RotXYZ_deg=(0,-45,0) Trans_m=(3,0,0)\n";q
 
     Send(Socket4Sending,sConfigCmds); // wlasciwe wyslanie w koncu
 
     cout << "Akcja:" << endl;  
       
   for (GeomObject &rObj : scene._Container4Objects) {
+    cout << "for " << endl;
     usleep(20000);
     ChangeState(scene);
     scene.MarkChange();
     usleep(100000);
   }
-  usleep(100000);
-
-  cout << "Close\n" << endl; // To tylko, aby pokazac wysylana instrukcje
-  Send(Socket4Sending,"Close\n");
-  ClientSender.CancelCountinueLooping();
-  Thread4Sending.join();
-  close(Socket4Sending);
+    //usleep(100000);
+    cout << "dupa\n" << endl; // To tylko, aby pokazac wysylana instrukcje
+    Send(Socket4Sending,"dupa\n");
+    cout << "Close\n" << endl; // To tylko, aby pokazac wysylana instrukcje
+    Send(Socket4Sending,"Close\n");
+    ClientSender.CancelCountinueLooping();
+    Thread4Sending.join();
+    close(Socket4Sending);
 
 
     // Przetwarzanie poleceń z pliku XML
-    std::ifstream file("polecenia.xml");
+    std::ifstream file(instructionFile);
     if (!file.is_open()) {
         cerr << "Nie można otworzyć pliku z poleceniami!\n";
         return 1;

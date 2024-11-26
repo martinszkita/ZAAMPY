@@ -1,4 +1,4 @@
-#define ROTATE_SPEED 30
+<!-- #define ROTATE_SPEED 30
 /*
 * Przykaadowy zestaw polece«
 */
@@ -10,4 +10,9 @@ Pause 1000
  /* Zawieszenie dziaaania na 1 sek. */
 Move Ob_A 10 20
 Rotate Ob_B Z ROTATE_SPEED 60
-Move Ob_B 10 20
+Move Ob_B 10 20 -->
+
+#define ROTATE_SPEED 30
+Pause 10000
+Rotate TestLinkConfigXML Z ROTATE_SPEED 60
+Pause 10000

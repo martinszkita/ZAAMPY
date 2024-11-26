@@ -12,7 +12,6 @@
 #include <unistd.h>
 #include "Port.hh"
 
-
 using namespace std;
 
 using ::cout;
