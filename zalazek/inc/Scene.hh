@@ -81,11 +81,18 @@ inline const char* Cmds4Obj3[STATES_NUMBER] = {
  * \link AbstractScene AbstractScene \endlink.
  */
 class Scene : public AbstractScene, public AccessControl {
+    /*!
+     * \brief Mapa przechowująca obiekty mobilne na scenie.
+     *
+     * Klucz mapy to nazwa obiektu mobilnego, a wartość to wskaźnik (smart pointer)
+     * na obiekt mobilny.
+     */
+    std::map<std::string, std::shared_ptr<AbstractMobileObj>> _objects;
 public:
-  /*!
-   * \brief Prosta kolekcja obiektów sceny
-   */
-   std::vector<GeomObject>   _Container4Objects;
+  // /*!
+  //  * \brief Prosta kolekcja obiektów sceny
+  //  */
+  //  std::vector<GeomObject>   _Container4Objects;
     /*!
      * \brief Konstruktor domyślny klasy Scene.
      *
@@ -144,13 +151,7 @@ public:
     void PrintAllSceneObjects() const;
 
 private:
-    /*!
-     * \brief Mapa przechowująca obiekty mobilne na scenie.
-     *
-     * Klucz mapy to nazwa obiektu mobilnego, a wartość to wskaźnik (smart pointer)
-     * na obiekt mobilny.
-     */
-    std::map<std::string, std::shared_ptr<AbstractMobileObj>> _objects;
+
 };
 
 #endif

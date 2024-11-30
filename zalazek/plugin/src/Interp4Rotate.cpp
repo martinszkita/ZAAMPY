@@ -76,15 +76,15 @@ bool Interp4Rotate::ExecCmd( AbstractScene &rScn, const char * sMobObjName,Abstr
     double _new_orientation_deg = 0;
 
     switch(GetAxis()){
-        case 'x':
+        case 'X':
             _new_orientation_deg = GetAngle() + pObj->GetAng_Roll_deg();
             pObj->SetAng_Roll_deg(_new_orientation_deg);
             break;
-        case 'y':
+        case 'Y':
             _new_orientation_deg = GetAngle() + pObj->GetAng_Pitch_deg();
             pObj->SetAng_Pitch_deg(_new_orientation_deg);
             break;
-        case 'z':
+        case 'Z':
             _new_orientation_deg = GetAngle() + pObj->GetAng_Yaw_deg();
             pObj->SetAng_Yaw_deg(_new_orientation_deg);
             break;;

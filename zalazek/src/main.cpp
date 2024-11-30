@@ -89,20 +89,32 @@ int main(int argc, char **argv) {
     // Wysyłanie poleceń z config.xml do serwera
     for (const auto& cube : config.cubes) {
         ostringstream oss;
-        oss << "AddObj Name=" << cube.name << "\n";
-            // // << " RGB=(" << cube.color << ")"
-            // << " Scale=(" << cube.scale << ")"
-            // << " Shift=(" << cube.shift << ")"
-            // << " RotXYZ_deg=(" << cube.rotXYZ << ")"
-            // << " Trans_m=(" << cube.trans_m << ")\n";
-            // cout << "RGB w oss: " <<cube.color << endl;
-        std::cout << "wyslano na serwer z configa: " << oss.str().c_str()  << std::endl;
-        Send(Socket4Sending, oss.str().c_str());
-        scene.AddMobileObj(cube);
+        oss << "AddObj Name=" <<  cube.name
+            << " RGB=" << stringToVecString(cube.color)
+            << " Scale=" << stringToVecString(cube.scale)
+            << " Shift=" << stringToVecString(cube.shift)
+            << " RotXYZ_deg=" << stringToVecString(cube.rotXYZ)
+            << " Trans_m=" << stringToVecString(cube.trans_m) << "\n";
+
+        std::cout << "Wysylanie na serwer: " << oss.str() << std::endl;
+
+        if (Send(Socket4Sending, oss.str().c_str()) < 0) {
+            std::cerr << "Error: Nie udalo sie wyslac na serwer!\n";
+        }
+        else{
+            std::cout << "Sukces: udalo sie wysłać na serwer!" << std::endl;
+        }
+
+        // Dodawanie obiektu do sceny
+        scene.AddMobileObj(new MobileObj(cube.name));
+
+        if(scene.GetObjects().empty()){
+            std::cerr << "Error: pusta lista obiektów na scenie!" << std::endl;
+        }
+
     }
 
-    cout << "lista obiektow na scenie po wczytaniu configa: " << endl;
-    scene.PrintAllSceneObjects();
+
 
     std::ifstream file(instructionFile);
     if (!file.is_open()) {

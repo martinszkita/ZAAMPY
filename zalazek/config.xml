@@ -6,6 +6,6 @@
         <Lib Name="Interp4Set.so"/>
     </Plugins>
     <Objects>
-        <Cube Name="Base"/>
+        <Cube Name="Base" RGB="0 200 0"/>
     </Objects>
 </Config>

@@ -25,6 +25,14 @@
  */
 class MobileObj : public AbstractMobileObj {
   private:
+
+    /*!
+     * \brief Nazwa bryły.
+     *
+     * Unikalna nazwa identyfikująca obiekt.
+     */
+    std::string _name;
+
     /*!
      * \brief Wektor pozycji bryły w przestrzeni 3D.
      *
@@ -53,14 +61,27 @@ class MobileObj : public AbstractMobileObj {
      */
     double _yaw;
 
-    /*!
-     * \brief Nazwa bryły.
-     *
-     * Unikalna nazwa identyfikująca obiekt.
-     */
-    std::string _name;
 
   public:
+
+    /*!
+     * \brief Konstruktor parametryczny.
+     *
+     * Inicjalizuje obiekt mobilny z nazwą oraz opcjonalnymi wartościami pozycji i orientacji.
+     * 
+     * \param name - Nazwa obiektu (wymagana).
+     * \param position - Pozycja obiektu (domyślnie {0, 0, 0}).
+     * \param roll - Kąt obrotu wokół osi X (domyślnie 0).
+     * \param pitch - Kąt obrotu wokół osi Y (domyślnie 0).
+     * \param yaw - Kąt obrotu wokół osi Z (domyślnie 0).
+     */
+    MobileObj(const std::string& name, 
+              const Vector3D& position = {0.0, 0.0, 0.0}, 
+              double roll = 0.0, 
+              double pitch = 0.0, 
+              double yaw = 0.0)
+        : _name(name), _position(position), _roll(roll), _pitch(pitch), _yaw(yaw) {}
+
     /*!
      * \brief Pobiera pozycję obiektu w metrach.
      * \return Wektor 3D zawierający współrzędne pozycji.

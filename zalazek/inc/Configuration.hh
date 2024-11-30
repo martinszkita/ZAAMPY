@@ -85,5 +85,31 @@ struct Configuration {
     std::vector<Cube> cubes;
 };
 
+/*!
+    \brief Funkcja zmieniająca string w formie "x y z" na string w formie wektora "(x,y,z)"
+
+    \param[in] string w postaci "x y z"
+    \param[out] string w postaci "(x,y,z)"
+*/
+std::string stringToVecString(std::string str){
+    std::string result = str;
+    
+    // Zamień wszystkie spacje na przecinki
+    for (size_t pos = 0; (pos = result.find(' ', pos)) != std::string::npos; ++pos) {
+        result.replace(pos, 1, ",");
+    }
+    
+    // Dodaj nawiasy
+    result.insert(0, "(");
+    result.append(")");
+    
+    return result;
+
+}
+
+/*!
+
+*/
+
 #endif
 

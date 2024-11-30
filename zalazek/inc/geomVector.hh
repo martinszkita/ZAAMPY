@@ -78,6 +78,20 @@ namespace geom {
      */
    Vector() { for (Type &Val : _Coord) Val = 0; }
 
+    // Nowy konstruktor parametryczny
+    /*!
+     * \brief Konstruktor inicjalizujący wektor współrzędnymi.
+     * \param args - Tablica współrzędnych o długości `Size`.
+     * \throw std::invalid_argument - Jeśli liczba argumentów różni się od `Size`.
+     */
+    Vector(std::initializer_list<Type> args) {
+        if (args.size() != Size) {
+            throw std::invalid_argument("Vector must be initialized with exactly " +
+                                        std::to_string(Size) + " values.");
+        }
+        std::copy(args.begin(), args.end(), _Coord);
+    }
+
     /*!
      * \brief Dostęp do wybranej składowej wektora.
      *
