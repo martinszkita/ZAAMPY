@@ -42,7 +42,7 @@ void XMLInterp4Config::startElement(const XMLCh *const, const XMLCh *const pLoca
 void XMLInterp4Config::endElement(const XMLCh *const, const XMLCh *const pLocalName,
                                   const XMLCh *const) {
     char *elementName = XMLString::transcode(pLocalName);
-    std::cout << "End element: " << elementName << "\n";
+    //std::cout << "End element: " << elementName << "\n";
     XMLString::release(&elementName);
 }
 

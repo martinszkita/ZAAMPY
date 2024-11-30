@@ -17,26 +17,19 @@ AbstractInterp4Command* CreateCmd(void)
 }
 
 
-/*!
- * Konstruktor klasy
- */
 Interp4Move::Interp4Move(): _Speed_mmS(0), _Distance_mm(0)
 {}
 
 
-/*!
- *
- */
+
 void Interp4Move::PrintCmd() const
 {
   cout << GetCmdName() << " " << _Speed_mmS  << " " <<_Distance_mm<<" "<< endl;
 }
 
 void Interp4Move::setRobotName(std::string _name) {
-    // const char* name_cstr = _name.c_str();  // Explicit conversion
-    _robotName = _name;                     // Assign std::string
+    _robotName = _name;
 }
-
 
 std::string Interp4Move::getRobotName() const{
     return _robotName;
@@ -59,7 +52,7 @@ bool Interp4Move::ExecCmd( AbstractScene &rScn, const char * sMobObjName,Abstrac
   AbstractMobileObj * pObj = rScn.FindMobileObj(sMobObjName);
 
   if (pObj == nullptr){
-    std::cerr << "Nie znaleziono obiektu o nazwie: "<< sMobObjName << endl;
+    std::cerr << GetCmdName() <<"   -- nie znaleziono obiektu o nazwie: "<< sMobObjName << endl;
     return false;
   }
 

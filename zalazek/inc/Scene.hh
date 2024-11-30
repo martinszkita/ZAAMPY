@@ -91,12 +91,14 @@ public:
      *
      * Inicjalizuje pustą scenę.
      */
-    Scene(): _Container4Objects(3)
-    {
-      // _Container4Objects[0].SetCmds(Cmds4Obj1);
-      // _Container4Objects[1].SetCmds(Cmds4Obj2);
-      // _Container4Objects[2].SetCmds(Cmds4Obj3);
-    }
+    Scene() = default;
+
+    // Scene(): _Container4Objects(3)
+    // {
+    //   _Container4Objects[0].SetCmds(Cmds4Obj1);
+    //   _Container4Objects[1].SetCmds(Cmds4Obj2);
+    //   _Container4Objects[2].SetCmds(Cmds4Obj3);
+    // }
 
     /*!
      * \brief Destruktor klasy Scene.
@@ -138,6 +140,8 @@ public:
      * \param[in] objects - Mapa obiektów mobilnych identyfikowanych przez ich nazwy.
      */
     void SetObjects(const std::map<std::string, std::shared_ptr<AbstractMobileObj>>& objects);
+
+    void PrintAllSceneObjects() const;
 
 private:
     /*!

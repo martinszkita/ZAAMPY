@@ -2,7 +2,8 @@
 #include <fstream>
 #include <dlfcn.h>
 #include <cassert>
-#include <sstream> 
+#include <sstream>
+#include <thread>
 #include "XMLInterp4Config.hh"
 #include "Configuration.hh"
 #include "../plugin/inc/Interp4Move.hh"
@@ -21,60 +22,35 @@
 #include <xercesc/util/XMLString.hpp>
 #include <xercesc/sax/SAXParseException.hpp>
 #include <xercesc/sax2/SAX2XMLReader.hpp>
-#include <xercesc/sax2/XMLReaderFactory.hpp>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <cstring>
 #include <cerrno>
-#include <thread>
 #include "Port.hh"
 #include "Sender.hh"
 
-// #define SERVER_IP "127.0.0.1"  // Serwer działa lokalnie
-
-
 using namespace std;
-using ::cout;
-
-// void loadPlugins(const std::vector<std::string>& plugins) {
-//     for (const auto& plugin : plugins) {
-//         void* handle = dlopen(plugin.c_str(), RTLD_LAZY);
-//         if (!handle) {
-//             std::cerr << "Error loading plugin: " << plugin << " - " << dlerror() << std::endl;
-//             throw std::runtime_error("Plugin load failed");
-//         }
-//         std::cout << "Loaded plugin: " << plugin << std::endl;
-//     }
-// }
 
 int main(int argc, char **argv) {
     if (argc != 3) {
-        cerr << "Usage: " << argv[0] << " <config_file.xml>" << "<instructions_file.xml>" << endl;
+        cerr << "Usage: " << argv[0] << " <config_file.xml> <instructions_file.xml>" << endl;
         return 1;
     }
 
     // Wczytywanie konfiguracji XML
     const char *configFileName = argv[1];
-    Configuration config = XMLInterp4Config::redConfigurationFromXML(configFileName);
-
     const char *instructionFile = argv[2];
+
+    Configuration config = XMLInterp4Config::redConfigurationFromXML(configFileName);
 
     vector<void*> libraryHandles; // Do przechowywania uchwytów bibliotek
     vector<AbstractInterp4Command*> commands; // Do przechowywania obiektów wtyczek
 
-    // na razie ladowanie wszystkich bibliotek na sztywno
     try {
         // Ładowanie bibliotek dynamicznych
-        const vector<string> libraries = {
-            "libs/Interp4Move.so",
-            "libs/Interp4Rotate.so",
-            "libs/Interp4Pause.so",
-            "libs/Interp4Set.so"
-        };
-
-        for (const auto& libName : libraries) {
+        for (const auto& libName : config.plugins) {
             void* pLibHnd = dlopen(libName.c_str(), RTLD_LAZY);
             if (!pLibHnd) {
                 cerr << "!!! Brak biblioteki: " << libName << endl;
@@ -93,94 +69,78 @@ int main(int argc, char **argv) {
             commands.push_back(pCmd);
             libraryHandles.push_back(pLibHnd);
 
-            cout << "Załadowano bibliotekę: " << libName << endl;
+            //cout << "Załadowano bibliotekę: " << libName << endl;
         }
 
-
-    }catch (const exception& e) {
+    } catch (const exception& e) {
         cerr << "Error: " << e.what() << endl;
         return 1;
     }
 
-    // incjalizacja połączenia z serwerem
+    // Inicjalizacja połączenia z serwerem
     Scene scene;
     int Socket4Sending;
 
     if (!OpenConnection(Socket4Sending)) return 1;
 
-    Sender   ClientSender(Socket4Sending,&scene);
+    Sender ClientSender(Socket4Sending, &scene);
+    std::thread Thread4Sending(Fun_CommunicationThread, &ClientSender);
 
-    std::thread   Thread4Sending(Fun_CommunicationThread,&ClientSender);
+    // Wysyłanie poleceń z config.xml do serwera
+    for (const auto& cube : config.cubes) {
+        ostringstream oss;
+        oss << "AddObj Name=" << cube.name << "\n";
+            // // << " RGB=(" << cube.color << ")"
+            // << " Scale=(" << cube.scale << ")"
+            // << " Shift=(" << cube.shift << ")"
+            // << " RotXYZ_deg=(" << cube.rotXYZ << ")"
+            // << " Trans_m=(" << cube.trans_m << ")\n";
+            // cout << "RGB w oss: " <<cube.color << endl;
+        std::cout << "wyslano na serwer z configa: " << oss.str().c_str()  << std::endl;
+        Send(Socket4Sending, oss.str().c_str());
+        scene.AddMobileObj(cube);
+    }
 
-    const char *sConfigCmds = "AddObj Name=TESTdupa\n"
-    "Clear\n"
-    "AddObj Name=Podstawa1 RGB=(0,0,0) Scale=(4,2,1) Shift=(0.5,0,0) RotXYZ_deg=(0,-45,20) Trans_m=(-1,3,0)\n"
-    "AddObj Name=Podstawa1.Ramie1 RGB=(0,0,0) Scale=(3,3,1) Shift=(0.5,0,0) RotXYZ_deg=(0,-45,0) Trans_m=(4,0,0)\n"
-    "AddObj Name=Podstawa1.Ramie1.Ramie2 RGB=(0,0,0) Scale=(2,2,1) Shift=(0.5,0,0) RotXYZ_deg=(0,-45,0) Trans_m=(3,0,0)\n";     
-    // "AddObj Name=Podstawa2 RGB=(20,200,200) Scale=(4,2,1) Shift=(0.5,0,0) RotXYZ_deg=(0,-45,0) Trans_m=(-1,-3,0)\n"
-    // "AddObj Name=Podstawa2.Ramie1 RGB=(200,0,0) Scale=(3,3,1) Shift=(0.5,0,0) RotXYZ_deg=(0,-45,0) Trans_m=(4,0,0)\n"
-    // "AddObj Name=Podstawa2.Ramie1.Ramie2 RGB=(100,200,0) Scale=(2,2,1) Shift=(0.5,0,0) RotXYZ_deg=(0,-45,0) Trans_m=(3,0,0)\n";q
+    cout << "lista obiektow na scenie po wczytaniu configa: " << endl;
+    scene.PrintAllSceneObjects();
 
-    Send(Socket4Sending,sConfigCmds); // wlasciwe wyslanie w koncu
-
-    cout << "Akcja:" << endl;  
-      
-  for (GeomObject &rObj : scene._Container4Objects) {
-    cout << "for " << endl;
-    usleep(20000);
-    ChangeState(scene);
-    scene.MarkChange();
-    usleep(100000);
-  }
-    //usleep(100000);
-    cout << "dupa\n" << endl; // To tylko, aby pokazac wysylana instrukcje
-    Send(Socket4Sending,"dupa\n");
-    cout << "Close\n" << endl; // To tylko, aby pokazac wysylana instrukcje
-    Send(Socket4Sending,"Close\n");
-    ClientSender.CancelCountinueLooping();
-    Thread4Sending.join();
-    close(Socket4Sending);
-
-
-    // Przetwarzanie poleceń z pliku XML
     std::ifstream file(instructionFile);
     if (!file.is_open()) {
         cerr << "Nie można otworzyć pliku z poleceniami!\n";
         return 1;
     }
 
-    
     ComChannel comChannel;
+    string command;
 
-    std::string command;
-    while (std::getline(file, command)) {
-        std::istringstream iss(command);
-        std::string cmdType;
+    // obsluga poleceń z pliku polecenia.xml
+    while (getline(file, command)) {
+        istringstream iss(command);
+        string cmdType;
         iss >> cmdType;
 
         if (cmdType == "Move") {
-            std::string objectName;
+            string objectName;
             double speed, distance;
             iss >> objectName >> speed >> distance;
 
-            cout << "Odczytano: " << objectName << " " << speed << " " << distance << "\n";
+            cout << "Odczytano: " << cmdType <<" " << objectName << " " << speed << " " << distance << "\n";
 
             Interp4Move movePlugin;
-            movePlugin.setRobotName(objectName); // ?
+            movePlugin.setRobotName(objectName);
             movePlugin.setSpeed(speed);
             movePlugin.setDistance(distance);
-
             movePlugin.ExecCmd(scene, objectName.c_str(), comChannel);
         }
 
         if (cmdType == "Rotate") {
-            std::string objectName;
-            double ang_speed, ang_deg;
+            string objectName;
             char axis;
-            iss >> objectName >> axis>> ang_speed >> ang_deg;
+            double ang_speed, ang_deg;
+            iss >> objectName >> axis >> ang_speed >> ang_deg;
 
-            cout << "Odczytano: " << objectName << " " << axis  <<" "<< ang_speed<< " " << ang_deg << "\n";
-    
+            cout << "Odczytano: " << cmdType <<" " << objectName << " " << axis << " " << ang_speed << " " << ang_deg << "\n";
+
             Interp4Rotate rotatePlugin;
             rotatePlugin.SetRobotName(objectName);
             rotatePlugin.SetAxis(axis);
@@ -190,16 +150,16 @@ int main(int argc, char **argv) {
         }
 
         if (cmdType == "Set") {
-            std::string objectName;
-            double x,y,z,fi,teta,psi;
+            string objectName;
+            double x, y, z, fi, teta, psi;
             iss >> objectName >> x >> y >> z >> fi >> teta >> psi;
             Vector3D pos_vec_tmp;
             pos_vec_tmp[0] = x;
             pos_vec_tmp[1] = y;
             pos_vec_tmp[2] = z;
 
-            cout << "Odczytano: " << objectName << " " << x  <<" "<< y<< " " << z << " " << fi  <<" "<< teta<< " " << psi<<endl;
-    
+            cout << "Odczytano: " << cmdType <<" " << objectName << " " << x << " " << y << " " << z << " " << fi << " " << teta << " " << psi << endl;
+
             Interp4Set setPlugin;
             setPlugin.SetRobotName(objectName);
             setPlugin.SetPosition(pos_vec_tmp);
@@ -207,15 +167,15 @@ int main(int argc, char **argv) {
         }
 
         if (cmdType == "Pause") {
-            std::string objectName;
-            double wait_ms;
+            string objectName;
+            unsigned int wait_ms;
             iss >> objectName >> wait_ms;
-            cout << "Odczytano: " << objectName << " " << wait_ms << "\n";
-    
-            Interp4Pause rotatePlugin;
-            rotatePlugin.SetRobotName(objectName);
-            rotatePlugin.SetPauseTime(wait_ms);
-            rotatePlugin.ExecCmd(scene, objectName.c_str(), comChannel);
+            cout << "Odczytano: " << cmdType <<" " << objectName << " " << wait_ms << "\n";
+
+            Interp4Pause pausePlugin;
+            pausePlugin.SetRobotName(objectName);
+            pausePlugin.SetPauseTime(wait_ms);
+            pausePlugin.ExecCmd(scene, objectName.c_str(), comChannel);
         }
     }
 
@@ -223,6 +183,9 @@ int main(int argc, char **argv) {
         dlclose(handle);
     }
 
-return 0;
+    ClientSender.CancelCountinueLooping();
+    Thread4Sending.join();
+    close(Socket4Sending);
 
+    return 0;
 }

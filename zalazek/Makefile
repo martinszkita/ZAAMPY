@@ -1,6 +1,6 @@
 # Flagi i ustawienia
 CXX = g++
-CXXFLAGS = -Wall -std=c++20 -Iinc -Iplugin/inc -I/usr/include/xercesc -pthread
+CXXFLAGS = -Wall -std=c++20 -Iinc -Iplugin/inc -I/usr/include/xercesc -pthread -g
 LDLIBS = -Llibs -Wl,-rpath,libs -l:Interp4Move.so -l:Interp4Set.so -l:Interp4Rotate.so -l:Interp4Pause.so -ldl -lxerces-c
 
 

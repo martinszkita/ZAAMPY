@@ -26,3 +26,9 @@ const std::map<std::string, std::shared_ptr<AbstractMobileObj>>& Scene::GetObjec
 void Scene::SetObjects(const std::map<std::string, std::shared_ptr<AbstractMobileObj>>& objects) {
     _objects = objects;
 }
+
+void Scene::PrintAllSceneObjects() const{
+    for (const auto & objName : GetObjects()){
+        std::cout << objName.first << " ";
+    }
+}

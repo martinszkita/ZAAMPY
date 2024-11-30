@@ -46,7 +46,7 @@ bool Interp4Pause::ExecCmd( AbstractScene &rScn, const char * sMobObjName,Abstra
     AbstractMobileObj * pObj = rScn.FindMobileObj(sMobObjName);
 
   if (pObj == nullptr){
-    std::cerr << "Nie znaleziono obiektu o nazwie: "<< sMobObjName << std::endl;
+    std::cerr << GetCmdName() <<"  -- nie znaleziono obiektu o nazwie: "<< sMobObjName << std::endl;
     return false;
   }
 
