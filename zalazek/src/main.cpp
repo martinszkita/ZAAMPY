@@ -86,6 +86,11 @@ int main(int argc, char **argv) {
     Sender ClientSender(Socket4Sending, &scene);
     std::thread Thread4Sending(Fun_CommunicationThread, &ClientSender);
 
+    // czyscimy scene przed wyslaniem
+    if (Send(Socket4Sending, "Clear \n") < 0) {
+        std::cerr << "Error: Nie udalo sie wyslac na serwer!\n";
+    }
+
     // Wysyłanie poleceń z config.xml do serwera
     for (const auto& cube : config.cubes) {
         ostringstream oss;
@@ -96,7 +101,7 @@ int main(int argc, char **argv) {
             << " RotXYZ_deg=" << stringToVecString(cube.rotXYZ)
             << " Trans_m=" << stringToVecString(cube.trans_m) << "\n";
 
-        std::cout << "Wysylanie na serwer: " << oss.str() << std::endl;
+        // std::cout << "Wysylanie na serwer: " << oss.str() << std::endl;
 
         if (Send(Socket4Sending, oss.str().c_str()) < 0) {
             std::cerr << "Error: Nie udalo sie wyslac na serwer!\n";
@@ -136,22 +141,28 @@ int main(int argc, char **argv) {
             double speed, distance;
             iss >> objectName >> speed >> distance;
 
-            cout << "Odczytano: " << cmdType <<" " << objectName << " " << speed << " " << distance << "\n";
+            //cout << "Odczytano: " << cmdType <<" " << objectName << " " << speed << " " << distance << "\n";
 
             Interp4Move movePlugin;
             movePlugin.setRobotName(objectName);
             movePlugin.setSpeed(speed);
             movePlugin.setDistance(distance);
             movePlugin.ExecCmd(scene, objectName.c_str(), comChannel);
+
+            std::ostringstream oss;
+            oss << "UpdateObj Name=" << objectName
+                << " Trans_m=" << scene.FindMobileObj(objectName.c_str())->GetPosition_m(); 
+            cout << "Move wysłano: " << oss.str() << endl;
+            Send(Socket4Sending, oss.str().c_str());
         }
 
-        if (cmdType == "Rotate") {
+        else if (cmdType == "Rotate") {
             string objectName;
             char axis;
             double ang_speed, ang_deg;
             iss >> objectName >> axis >> ang_speed >> ang_deg;
 
-            cout << "Odczytano: " << cmdType <<" " << objectName << " " << axis << " " << ang_speed << " " << ang_deg << "\n";
+            //cout << "Odczytano: " << cmdType <<" " << objectName << " " << axis << " " << ang_speed << " " << ang_deg << "\n";
 
             Interp4Rotate rotatePlugin;
             rotatePlugin.SetRobotName(objectName);
@@ -159,18 +170,21 @@ int main(int argc, char **argv) {
             rotatePlugin.SetAngularVelocity(ang_speed);
             rotatePlugin.SetAngle(ang_deg);
             rotatePlugin.ExecCmd(scene, objectName.c_str(), comChannel);
+
+            std::ostringstream oss;
+            oss << "UpdateObj Name=" << objectName
+                << " RotXYZ_deg=" << scene.FindMobileObj(objectName.c_str())->GetRotXYZ_deg(); 
+            cout << "Rotate wysłano: " << oss.str() << endl;
+            Send(Socket4Sending, oss.str().c_str());
         }
 
-        if (cmdType == "Set") {
+        else if (cmdType == "Set") {
             string objectName;
             double x, y, z, fi, teta, psi;
             iss >> objectName >> x >> y >> z >> fi >> teta >> psi;
-            Vector3D pos_vec_tmp;
-            pos_vec_tmp[0] = x;
-            pos_vec_tmp[1] = y;
-            pos_vec_tmp[2] = z;
+            Vector3D pos_vec_tmp = Vector3D({x,y,z});
 
-            cout << "Odczytano: " << cmdType <<" " << objectName << " " << x << " " << y << " " << z << " " << fi << " " << teta << " " << psi << endl;
+            //cout << "Odczytano: " << cmdType <<" " << objectName << " " << x << " " << y << " " << z << " " << fi << " " << teta << " " << psi << endl;
 
             Interp4Set setPlugin;
             setPlugin.SetRobotName(objectName);
@@ -178,7 +192,7 @@ int main(int argc, char **argv) {
             setPlugin.ExecCmd(scene, objectName.c_str(), comChannel);
         }
 
-        if (cmdType == "Pause") {
+        else if (cmdType == "Pause") {
             string objectName;
             unsigned int wait_ms;
             iss >> objectName >> wait_ms;
@@ -189,6 +203,11 @@ int main(int argc, char **argv) {
             pausePlugin.SetPauseTime(wait_ms);
             pausePlugin.ExecCmd(scene, objectName.c_str(), comChannel);
         }
+
+
+
+
+        
     }
 
     for (auto& handle : libraryHandles) {

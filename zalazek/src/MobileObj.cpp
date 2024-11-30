@@ -10,28 +10,12 @@ void MobileObj::SetPosition_m(const Vector3D &rPos)  {
     _position = rPos;
 }
 
-double MobileObj::GetAng_Roll_deg() const  {
-    return _roll;
+const Vector3D & MobileObj::GetRotXYZ_deg() const {
+    return _position;
 }
 
-void MobileObj::SetAng_Roll_deg(double Ang_Roll_deg)  {
-    _roll = Ang_Roll_deg;
-}
-
-double MobileObj::GetAng_Pitch_deg() const  {
-    return _pitch;
-}
-
-void MobileObj::SetAng_Pitch_deg(double Ang_Pitch_deg)  {
-    _pitch = Ang_Pitch_deg;
-}
-
-double MobileObj::GetAng_Yaw_deg() const  {
-    return _yaw;
-}
-
-void MobileObj::SetAng_Yaw_deg(double Ang_Yaw_deg)  {
-    _yaw = Ang_Yaw_deg;
+void MobileObj::SetRotXYZ_deg(const Vector3D &rPos)  {
+    _position = rPos;
 }
 
 const std::string & MobileObj::GetName() const  {
@@ -41,4 +25,7 @@ const std::string & MobileObj::GetName() const  {
 void MobileObj::SetName(const char* sName)  {
     _name = std::string(sName);
 }
+
+
+
 

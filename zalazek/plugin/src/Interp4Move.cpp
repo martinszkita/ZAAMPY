@@ -57,7 +57,7 @@ bool Interp4Move::ExecCmd( AbstractScene &rScn, const char * sMobObjName,Abstrac
   }
 
   Vector3D currentPosition = pObj->GetPosition_m();
-  double currentYawDeg = pObj->GetAng_Yaw_deg();
+  double currentYawDeg = pObj->GetRotXYZ_deg()[2];
   // Zamiana kąta yaw z stopni na radiany
   double yawRadians = currentYawDeg * M_PI / 180.0;
 

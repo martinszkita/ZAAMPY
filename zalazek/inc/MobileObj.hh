@@ -13,6 +13,7 @@
 
 #include "AbstractMobileObj.hh"
 #include "Vector3D.hh"
+#include "StateNumber.hh"
 
 /*!
  * \class MobileObj
@@ -25,6 +26,22 @@
  */
 class MobileObj : public AbstractMobileObj {
   private:
+      /*!
+   * \brief Identyfikuje aktualny stan obiektu.
+   *
+   * Identyfikuje aktualny stan obiektu. Indeks ten pozwala
+   * na wybór z tablicy \link GeomObject::_Cmd4StatDesc _Cmd4StatDesc\endlink
+   * odpowiedniego polecenia dla serwera, które reprezentuje aktualne
+   * położenie i orientację obiektu.
+   */
+   int _StateIdx = 0;
+  /*!
+   * \brief Zestaw sekwencji poleceń symulujących ruch obiektu.
+   *
+   * Zestaw sekwencji poleceń symulujących ruch obiektu.
+   * Każde polecenie odpowiada kolejnym stanom obiektu.
+   */
+   const char** _Cmd4StatDesc = nullptr;
 
     /*!
      * \brief Nazwa bryły.
@@ -40,28 +57,7 @@ class MobileObj : public AbstractMobileObj {
      */
     Vector3D _position;
 
-    /*!
-     * \brief Kąt obrotu wokół osi X (roll).
-     *
-     * Wartość kąta w stopniach.
-     */
-    double _roll;
-
-    /*!
-     * \brief Kąt obrotu wokół osi Y (pitch).
-     *
-     * Wartość kąta w stopniach.
-     */
-    double _pitch;
-
-    /*!
-     * \brief Kąt obrotu wokół osi Z (yaw).
-     *
-     * Wartość kąta w stopniach.
-     */
-    double _yaw;
-
-
+    Vector3D _RotXYZ_deg;
   public:
 
     /*!
@@ -71,16 +67,14 @@ class MobileObj : public AbstractMobileObj {
      * 
      * \param name - Nazwa obiektu (wymagana).
      * \param position - Pozycja obiektu (domyślnie {0, 0, 0}).
-     * \param roll - Kąt obrotu wokół osi X (domyślnie 0).
-     * \param pitch - Kąt obrotu wokół osi Y (domyślnie 0).
-     * \param yaw - Kąt obrotu wokół osi Z (domyślnie 0).
+     * \param RotXYZ_deg - Kąty RPY obiektu w stopniach(domyślnie {0, 0, 0}).
      */
     MobileObj(const std::string& name, 
-              const Vector3D& position = {0.0, 0.0, 0.0}, 
-              double roll = 0.0, 
-              double pitch = 0.0, 
-              double yaw = 0.0)
-        : _name(name), _position(position), _roll(roll), _pitch(pitch), _yaw(yaw) {}
+              const Vector3D& position = {0.0, 0.0, 0.0},
+              const Vector3D& RotXYZ_deg  =  {0.0, 0.0, 0.0}
+    )
+ 
+        : _name(name), _position(position), _RotXYZ_deg(RotXYZ_deg) {}
 
     /*!
      * \brief Pobiera pozycję obiektu w metrach.
@@ -94,41 +88,9 @@ class MobileObj : public AbstractMobileObj {
      */
     void SetPosition_m(const Vector3D &rPos) override;
 
-    /*!
-     * \brief Pobiera kąt obrotu wokół osi X (roll).
-     * \return Kąt w stopniach.
-     */
-    double GetAng_Roll_deg() const override;
+    const Vector3D & GetRotXYZ_deg() const ;
+    void SetRotXYZ_deg(const Vector3D &rPos);
 
-    /*!
-     * \brief Ustawia kąt obrotu wokół osi X (roll).
-     * \param[in] Ang_Roll_deg - Kąt w stopniach.
-     */
-    void SetAng_Roll_deg(double Ang_Roll_deg) override;
-
-    /*!
-     * \brief Pobiera kąt obrotu wokół osi Y (pitch).
-     * \return Kąt w stopniach.
-     */
-    double GetAng_Pitch_deg() const override;
-
-    /*!
-     * \brief Ustawia kąt obrotu wokół osi Y (pitch).
-     * \param[in] Ang_Pitch_deg - Kąt w stopniach.
-     */
-    void SetAng_Pitch_deg(double Ang_Pitch_deg) override;
-
-    /*!
-     * \brief Pobiera kąt obrotu wokół osi Z (yaw).
-     * \return Kąt w stopniach.
-     */
-    double GetAng_Yaw_deg() const override;
-
-    /*!
-     * \brief Ustawia kąt obrotu wokół osi Z (yaw).
-     * \param[in] Ang_Yaw_deg - Kąt w stopniach.
-     */
-    void SetAng_Yaw_deg(double Ang_Yaw_deg) override;
 
     /*!
      * \brief Pobiera nazwę obiektu.
@@ -141,6 +103,38 @@ class MobileObj : public AbstractMobileObj {
      * \param[in] sName - Wskaźnik na ciąg znaków reprezentujący nazwę.
      */
     void SetName(const char* sName) override;
+
+      /*!
+   * \brief Ustawia zestaw poleceń odpowiadających kolejnym stanom
+   *        obiektu.
+   */
+  void SetCmds(const char *CmdsTab[STATES_NUMBER]) { _Cmd4StatDesc = CmdsTab; }
+  /*!
+   * \brief Udostępnia kolejny zestaw poleceń umożliwiających
+   *        zespołu obiektu.
+   *
+   * Udostępnia kolejny zestaw poleceń umożliwiających
+   * zespołu obiektu. Ta metoda "udaje" metodę, która w oryginalnym
+   * rozwiązaniu powinna wygenerować odpowiednie polecenie na podstawie
+   * przechowywanej informacji o położeniu i orientacji obiektu.
+   */
+  std::string GetStateDesc() const override
+  {
+    return _Cmd4StatDesc[_StateIdx];
+  }
+  /*!
+   * \brief Zwiększa indeks stanu, o ile aktualny opis nie jest pusty.
+   *
+   *  Zwiększa indeks stanu, o ile aktualny opis nie jest pusty.
+   *  Ta metoda "udaje" metodę, która w oryginalnym rozwiązaniu
+   *  jest odpowiedzialna za zmianę stanu obiektu, tzn. zmianę jego
+   *  położenia lub orientacji.
+   */
+  bool IncStateIndex() {
+    if (_StateIdx >= STATES_NUMBER-1) return false;
+    ++_StateIdx;
+    return true;
+  }
 };
 
 #endif

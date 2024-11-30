@@ -3,7 +3,7 @@
 #include "AccessControl.hh"
 #include "Scene.hh"
 #include "AccessControl.hh"
-#include "GeomObject.hh"
+#include "MobileObj.hh"
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -119,10 +119,10 @@ bool OpenConnection(int &rSocket);
  * \param[in] pAccCtrl - wskaźnik na obiekt, poprzez który przekazywana jest informacja
  *                   o zmianie na scenie, zaś w trakcie dokonywania zmianay
  *                   zamykany jest dostęp do całej sceny.
- * \retval true - Jeśli dokonan zosała zmiana stanu wszystkich obiektów.
+ * \retval true - Jeśli dokonana zosała zmiana stanu wszystkich obiektów.
  * \retval false - w przypadku przeciwnym.
  */
-bool ChangeState(Scene &Scn); //GeomObject *pObj, AccessControl  *pAccCtrl)
+bool ChangeState(MobileObj *pObj, AccessControl *pAccCtrl);
 
 
 

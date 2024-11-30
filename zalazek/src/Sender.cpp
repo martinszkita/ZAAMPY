@@ -1,4 +1,6 @@
 #include "Sender.hh"
+#include "MobileObj.hh"
+#include <map>
 
 
 using namespace std;
@@ -15,20 +17,19 @@ void Sender::CancelCountinueLooping() { _ContinueLooping = false; }
 
 void Sender::Watching_and_Sending() {
     while (ShouldCountinueLooping()) {
-    if (!_pScn->IsChanged())  { usleep(10000); continue; }
-    _pScn->LockAccess();
-    
-    //------- Przeglądanie tej kolekcji to uproszczony przykład
-    
-    for (const GeomObject &rObj : _pScn->_Container4Objects) {
-                                    // Ta instrukcja to tylko uproszczony przykład
-    cout << rObj.GetStateDesc();
-        Send(_Socket,rObj.GetStateDesc()); // Tu musi zostać wywołanie odpowiedniej
-                                        // metody/funkcji gerującej polecenia dla serwera.
-    }
-    
-    _pScn->CancelChange();
-    _pScn->UnlockAccess();
+      if (!_pScn->IsChanged())  { usleep(10000); continue; }
+      _pScn->LockAccess();
+      
+
+      for (const auto &rPair : _pScn->GetObjects()) {
+        const auto &rObj = rPair.second; // Wartość mapy (std::shared_ptr<AbstractMobileObj>)
+        std::string stateDesc = rObj->GetStateDesc(); // Pobranie opisu stanu obiektu
+        std::cout << stateDesc;
+        Send(_Socket, stateDesc.c_str()); // Wysłanie opisu stanu na serwer
+      }
+      
+      _pScn->CancelChange();
+      _pScn->UnlockAccess();
     }
 }
 
@@ -78,21 +79,29 @@ bool OpenConnection(int &rSocket)
   return true;
 }
 
-bool ChangeState(Scene &Scn) //GeomObject *pObj, AccessControl  *pAccCtrl)
-{
-  bool Changed;
-
-  while (true) {
-    Scn.LockAccess(); // Zamykamy dostęp do sceny, gdy wykonujemy
-                            // modyfikacje na obiekcie.
-    for (GeomObject &rObj : Scn._Container4Objects) {
-       if (!(Changed = rObj.IncStateIndex())) { Scn.UnlockAccess();  return false; }
+bool ChangeState(MobileObj *pObj, AccessControl *pAccCtrl) {
+    if (!pObj || !pAccCtrl) {
+        std::cerr << "Błąd: Nieprawidłowy wskaźnik na obiekt lub kontroler dostępu.\n";
+        return false;
     }
-    Scn.MarkChange();
-    Scn.UnlockAccess();
-    usleep(300000);
-  }
-  return true;
+
+    while (true) {
+        pAccCtrl->LockAccess(); // Blokujemy dostęp do sceny
+
+        if (!pObj->IncStateIndex()) { // Jeśli obiekt nie może zmienić stanu
+            pAccCtrl->UnlockAccess();
+            return false; // Kończymy działanie funkcji
+        }
+
+        pAccCtrl->MarkChange(); // Oznaczamy, że nastąpiła zmiana
+        pAccCtrl->UnlockAccess(); // Otwieramy dostęp do sceny
+
+        // Wysłanie aktualizacji na serwer lub symulacja opóźnienia
+        usleep(300000); // 300 ms przerwy na animację
+    }
+
+    return true;
 }
+
 
 

@@ -40,20 +40,7 @@ private:
      */
     Vector3D pos;
 
-    /*!
-     * \brief Kąt obrotu wokół osi X w stopniach.
-     */
-    double ang_x_deg;
-
-    /*!
-     * \brief Kąt obrotu wokół osi Y w stopniach.
-     */
-    double ang_y_deg;
-
-    /*!
-     * \brief Kąt obrotu wokół osi Z w stopniach.
-     */
-    double ang_z_deg;
+    Vector3D rpy;
 
 public:
     /*!
@@ -123,26 +110,7 @@ public:
      */
     const Vector3D& GetPosition() const;
 
-    /*!
-     * \brief Pobiera kąt obrotu wokół osi X.
-     *
-     * \return Kąt w stopniach.
-     */
-    double GetAngleX() const;
-
-    /*!
-     * \brief Pobiera kąt obrotu wokół osi Y.
-     *
-     * \return Kąt w stopniach.
-     */
-    double GetAngleY() const;
-
-    /*!
-     * \brief Pobiera kąt obrotu wokół osi Z.
-     *
-     * \return Kąt w stopniach.
-     */
-    double GetAngleZ() const;
+    const Vector3D& GetRPY() const;
 
     /*!
      * \brief Ustawia nazwę robota.
@@ -158,26 +126,9 @@ public:
      */
     void SetPosition(const Vector3D& position);
 
-    /*!
-     * \brief Ustawia kąt obrotu wokół osi X.
-     *
-     * \param[in] value - Kąt w stopniach.
-     */
-    void SetAngleX(double value);
+    void SetRPY(const Vector3D& RPY);
 
-    /*!
-     * \brief Ustawia kąt obrotu wokół osi Y.
-     *
-     * \param[in] value - Kąt w stopniach.
-     */
-    void SetAngleY(double value);
-
-    /*!
-     * \brief Ustawia kąt obrotu wokół osi Z.
-     *
-     * \param[in] value - Kąt w stopniach.
-     */
-    void SetAngleZ(double value);
+    
 };
 
 #endif

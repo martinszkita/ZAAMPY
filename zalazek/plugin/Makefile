@@ -1,5 +1,5 @@
 # Domyślny cel
-__start__: obj __lines_for_space__ ../libs/Interp4Move.so ../libs/Interp4Set.so ../libs/Interp4Rotate.so ../libs/Interp4Pause.so
+__start__: obj __lines_for_space__ ../libs/libInterp4Move.so ../libs/libInterp4Set.so ../libs/libInterp4Rotate.so ../libs/libInterp4Pause.so
 	@echo "  Tworzenie wszystkich wtyczek zakonczone."
 	@echo
 
@@ -20,8 +20,8 @@ __lines_for_space__:
 	@echo
 
 # Reguła dla Interp4Move
-../libs/Interp4Move.so: obj/Interp4Move.o
-	g++ ${LDFLAGS} -o ../libs/Interp4Move.so obj/Interp4Move.o
+../libs/libInterp4Move.so: obj/Interp4Move.o
+	g++ ${LDFLAGS} -o ../libs/libInterp4Move.so obj/Interp4Move.o
 	@echo
 	@echo "  Wtyczka dla polecenia 'Move' zostala utworzona."
 	@echo
@@ -32,8 +32,8 @@ obj/Interp4Move.o: src/Interp4Move.cpp ../inc/AbstractInterp4Command.hh \
 	g++ -c ${CPPFLAGS} -o obj/Interp4Move.o src/Interp4Move.cpp
 
 # Reguła dla Interp4Set
-../libs/Interp4Set.so: obj/Interp4Set.o
-	g++ ${LDFLAGS} -o ../libs/Interp4Set.so obj/Interp4Set.o
+../libs/libInterp4Set.so: obj/Interp4Set.o
+	g++ ${LDFLAGS} -o ../libs/libInterp4Set.so obj/Interp4Set.o
 	@echo
 	@echo "  Wtyczka dla polecenia 'Set' zostala utworzona."
 	@echo
@@ -44,8 +44,8 @@ obj/Interp4Set.o: src/Interp4Set.cpp ../inc/AbstractInterp4Command.hh \
 	g++ -c ${CPPFLAGS} -o obj/Interp4Set.o src/Interp4Set.cpp
 
 # Reguła dla Interp4Rotate
-../libs/Interp4Rotate.so: obj/Interp4Rotate.o
-	g++ ${LDFLAGS} -o ../libs/Interp4Rotate.so obj/Interp4Rotate.o
+../libs/libInterp4Rotate.so: obj/Interp4Rotate.o
+	g++ ${LDFLAGS} -o ../libs/libInterp4Rotate.so obj/Interp4Rotate.o
 	@echo
 	@echo "  Wtyczka dla polecenia 'Rotate' zostala utworzona."
 	@echo
@@ -56,8 +56,8 @@ obj/Interp4Rotate.o: src/Interp4Rotate.cpp ../inc/AbstractInterp4Command.hh \
 	g++ -c ${CPPFLAGS} -o obj/Interp4Rotate.o src/Interp4Rotate.cpp
 
 # Reguła dla Interp4Pause
-../libs/Interp4Pause.so: obj/Interp4Pause.o
-	g++ ${LDFLAGS} -o ../libs/Interp4Pause.so obj/Interp4Pause.o
+../libs/libInterp4Pause.so: obj/Interp4Pause.o
+	g++ ${LDFLAGS} -o ../libs/libInterp4Pause.so obj/Interp4Pause.o
 	@echo
 	@echo "  Wtyczka dla polecenia 'Pause' zostala utworzona."
 	@echo

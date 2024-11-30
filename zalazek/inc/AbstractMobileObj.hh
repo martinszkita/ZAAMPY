@@ -23,61 +23,19 @@
      public:
 
        virtual ~AbstractMobileObj() {}
-      
-       /*!
-        * \brief Udostępnia wartość kąta \e roll.
+       
+        /*!
+        * \brief Zmienia współrzędne aktualnej rotacji obiektu.
         *
-        *  Udostępnia wartość kąta \e pitch reprezentuje rotację
-        *  zgodnie z ruchem wskazówek zegara wokół osi \e OX.
-        *  \return Wartość kąta \e roll wyrażona w stopniach.
+        * Zmienia współrzędne aktualnej rotacji obiektu.
+        * \param[in] rRot - nowa orientacja obiektu. Przyjmuje się,
+        *         że współrzędne wyrażone są w stopniach.
         */
-       virtual double GetAng_Roll_deg() const = 0;
-       /*!
-        * \brief Udostępnia wartość kąta \e yaw.
-        *
-        *  Udostępnia wartość kąta \e pitch reprezentuje rotację
-        *  zgodnie z ruchem wskazówek zegara wokół osi \e OY.
-        *  \return Wartość kąta \e pitch wyrażona w stopniach.
-        */
-       virtual double GetAng_Pitch_deg() const = 0;
-       /*!
-        * \brief Udostępnia wartość kąta \e yaw.
-        *
-        *  Udostępnia wartość kąta \e yaw reprezentuje rotację
-        *  zgodnie z ruchem wskazówek zegara wokół osi \e OZ.
-        *  \return Wartość kąta \e yaw wyrażona w stopniach.
-        */
-       virtual double GetAng_Yaw_deg() const = 0;
+       virtual void SetRotXYZ_deg(const Vector3D &rPos) = 0;
 
-       /*!
-        * \brief Zmienia wartość kąta \e roll.
-        *
-        *  Zmienia wartość kąta \e roll.
-        *  \param[in] Ang_Roll_deg - nowa wartość kąta \e roll wyrażona w stopniach.
-        */
-       virtual void SetAng_Roll_deg(double Ang_Roll_deg) = 0;
-       /*!
-        * \brief Zmienia wartość kąta \e pitch.
-        *
-        *  Zmienia wartość kąta \e pitch.
-        *  \param[in] Ang_Pitch_deg - nowa wartość kąta \e pitch wyrażona w stopniach.
-        */
-       virtual void SetAng_Pitch_deg(double Ang_Pitch_deg) = 0;
-       /*!
-        * \brief Zmienia wartość kąta \e yaw.
-        *
-        *  Zmienia wartość kąta \e yaw.
-        *  \param[in] Ang_Yaw_deg - nowa wartość kąta \e yaw wyrażona w stopniach.
-        */
-       virtual void SetAng_Yaw_deg(double Ang_Yaw_deg) = 0;
 
-       /*!
-        * \brief Udostępnia współrzędne aktualnej pozycji obiektu.
-        *
-        * Udostępnia współrzędne aktualnej pozycji obiektu
-        * \return Współrzędne aktualnej pozycji obiektu. Przyjmuje się,
-        *         że współrzędne wyrażone są w metrach.
-        */
+      virtual   const Vector3D & GetRotXYZ_deg() const = 0;
+
        virtual const Vector3D & GetPosition_m() const = 0;
        /*!
         * \brief Zmienia współrzędne aktualnej pozycji obiektu.
@@ -101,6 +59,7 @@
         *  \return Nazwa obiektu.
         */
         virtual const std::string & GetName() const = 0;
+        virtual std::string GetStateDesc() const = 0;
     };
 
 

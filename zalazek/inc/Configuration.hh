@@ -91,7 +91,7 @@ struct Configuration {
     \param[in] string w postaci "x y z"
     \param[out] string w postaci "(x,y,z)"
 */
-std::string stringToVecString(std::string str){
+inline std::string stringToVecString(std::string str){
     std::string result = str;
     
     // Zamień wszystkie spacje na przecinki
