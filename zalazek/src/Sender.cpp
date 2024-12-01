@@ -97,7 +97,7 @@ bool ChangeState(MobileObj *pObj, AccessControl *pAccCtrl) {
         pAccCtrl->UnlockAccess(); // Otwieramy dostęp do sceny
 
         // Wysłanie aktualizacji na serwer lub symulacja opóźnienia
-        usleep(300000); // 300 ms przerwy na animację
+        // usleep(300000); // 300 ms przerwy na animację
     }
 
     return true;

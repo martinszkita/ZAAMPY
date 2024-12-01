@@ -91,6 +91,11 @@ int main(int argc, char **argv) {
         std::cerr << "Error: Nie udalo sie wyslac na serwer!\n";
     }
 
+    else {
+        std::cout << "Scena została wyczyszczona! " << std::endl;
+    }
+
+
     // Wysyłanie poleceń z config.xml do serwera
     for (const auto& cube : config.cubes) {
         ostringstream oss;
@@ -100,8 +105,6 @@ int main(int argc, char **argv) {
             << " Shift=" << stringToVecString(cube.shift)
             << " RotXYZ_deg=" << stringToVecString(cube.rotXYZ)
             << " Trans_m=" << stringToVecString(cube.trans_m) << "\n";
-
-        // std::cout << "Wysylanie na serwer: " << oss.str() << std::endl;
 
         if (Send(Socket4Sending, oss.str().c_str()) < 0) {
             std::cerr << "Error: Nie udalo sie wyslac na serwer!\n";
@@ -118,8 +121,6 @@ int main(int argc, char **argv) {
         }
 
     }
-
-
 
     std::ifstream file(instructionFile);
     if (!file.is_open()) {
@@ -203,11 +204,7 @@ int main(int argc, char **argv) {
             pausePlugin.SetPauseTime(wait_ms);
             pausePlugin.ExecCmd(scene, objectName.c_str(), comChannel);
         }
-
-
-
-
-        
+ 
     }
 
     for (auto& handle : libraryHandles) {

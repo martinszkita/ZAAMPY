@@ -154,6 +154,7 @@ public:
      * \return Wskaźnik na nową instancję klasy Interp4Rotate.
      */
     static AbstractInterp4Command* CreateCmd();
+
 };
 
 #endif
