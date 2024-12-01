@@ -112,7 +112,10 @@ namespace geom {
      *  \pre 0 <= Ind < Size.
      *  \post  Referencja do żądanej składowej wektora.
      */
-   Type operator [](unsigned int Ind) const { assert(Ind < Size); return _Coord[Ind]; }
+   Type operator [](unsigned int Ind) const { 
+    // std::cout << "operator [] z klasy geomVector " << std::endl;
+    assert(Ind < Size); 
+   return _Coord[Ind]; }
 
 
     /*! 

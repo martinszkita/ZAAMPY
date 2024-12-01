@@ -30,6 +30,7 @@
 #include <cerrno>
 #include "Port.hh"
 #include "Sender.hh"
+#include "StepSize.hh"
 
 using namespace std;
 
@@ -109,9 +110,9 @@ int main(int argc, char **argv) {
         if (Send(Socket4Sending, oss.str().c_str()) < 0) {
             std::cerr << "Error: Nie udalo sie wyslac na serwer!\n";
         }
-        else{
-            std::cout << "Sukces: udalo sie wysłać na serwer!" << std::endl;
-        }
+        // else{
+        //     std::cout << "Sukces: udalo sie wysłać na serwer!" << std::endl;
+        // }
 
         // Dodawanie obiektu do sceny
         scene.AddMobileObj(new MobileObj(cube.name));
@@ -121,6 +122,8 @@ int main(int argc, char **argv) {
         }
 
     }
+
+
 
     std::ifstream file(instructionFile);
     if (!file.is_open()) {
@@ -142,7 +145,7 @@ int main(int argc, char **argv) {
             double speed, distance;
             iss >> objectName >> speed >> distance;
 
-            //cout << "Odczytano: " << cmdType <<" " << objectName << " " << speed << " " << distance << "\n";
+            cout << "Odczytano: " << cmdType <<" " << objectName << " " << speed << " " << distance << "\n";
 
             Interp4Move movePlugin;
             movePlugin.setRobotName(objectName);
@@ -152,7 +155,7 @@ int main(int argc, char **argv) {
 
             std::ostringstream oss;
             oss << "UpdateObj Name=" << objectName
-                << " Trans_m=" << scene.FindMobileObj(objectName.c_str())->GetPosition_m(); 
+                << " Trans_m=" << scene.FindMobileObj(objectName.c_str())->GetPosition_m() << "\n"; 
             cout << "Move wysłano: " << oss.str() << endl;
             Send(Socket4Sending, oss.str().c_str());
         }
@@ -163,7 +166,7 @@ int main(int argc, char **argv) {
             double ang_speed, ang_deg;
             iss >> objectName >> axis >> ang_speed >> ang_deg;
 
-            //cout << "Odczytano: " << cmdType <<" " << objectName << " " << axis << " " << ang_speed << " " << ang_deg << "\n";
+            cout << "Odczytano: " << cmdType <<" " << objectName << " " << ang_speed << " " << ang_deg << "\n";
 
             Interp4Rotate rotatePlugin;
             rotatePlugin.SetRobotName(objectName);
@@ -174,18 +177,56 @@ int main(int argc, char **argv) {
 
             std::ostringstream oss;
             oss << "UpdateObj Name=" << objectName
-                << " RotXYZ_deg=" << scene.FindMobileObj(objectName.c_str())->GetRotXYZ_deg(); 
-            cout << "Rotate wysłano: " << oss.str() << endl;
-            Send(Socket4Sending, oss.str().c_str());
-        }
+                 << " RotXYZ_deg=" << scene.FindMobileObj(objectName.c_str())->GetRotXYZ_deg() << "\n";
 
+            cout << "Rotate wysłano: " << oss.str() << endl;
+            cout << "to jest dobrze::::" << oss.str() << endl;
+           // Send(Socket4Sending, oss.str().c_str());
+
+            
+            unsigned int index = MobileObj::GetAxisIndex(axis);
+            double dt = 50; //delay w ms
+            double deltaRot = dt*ang_speed/1000;
+            // (ang_deg - scene.FindMobileObj(objectName.c_str())->GetRotXYZ_deg()[index]) / STEP_SIZE;
+            Vector3D currentRot  = scene.FindMobileObj(objectName.c_str())->GetRotXYZ_deg();
+            double currAngle = currentRot[index];
+
+            while(abs(ang_deg)>deltaRot/2 ) {
+                currAngle += deltaRot;
+                ang_deg -=deltaRot;
+                std::ostringstream oss; // Tworzymy nowy strumień na każdą iterację
+                currentRot[index]+=deltaRot;
+                // Aktualizacja odpowiedniej osi
+               
+
+                // Tworzenie polecenia UpdateObj
+                oss << "UpdateObj Name=" << objectName
+                    << " RotXYZ_deg=(" << currentRot[0] << ", "
+                    << currentRot[1] << ", "
+                    << currentRot[2] << ")" << "\n";
+                
+                std::string command = oss.str(); // Przechowujemy dane w ciągu znaków
+                std::cout << "Aktualizacja Rotate: " << command << std::endl;
+                std::cout << ang_deg <<  endl;
+                // Wysłanie polecenia do serwera
+                std::cout << command.c_str() << endl;
+                Send(Socket4Sending, command.c_str());
+
+                // Opóźnienie dla płynności animacji
+                std::this_thread::sleep_for(std::chrono::milliseconds(50));
+            }
+            
+
+
+        }
+        
         else if (cmdType == "Set") {
             string objectName;
             double x, y, z, fi, teta, psi;
             iss >> objectName >> x >> y >> z >> fi >> teta >> psi;
             Vector3D pos_vec_tmp = Vector3D({x,y,z});
 
-            //cout << "Odczytano: " << cmdType <<" " << objectName << " " << x << " " << y << " " << z << " " << fi << " " << teta << " " << psi << endl;
+            cout << "Odczytano: " << cmdType <<" " << objectName << " " << x << " " << y << " " << z << " " << fi << " " << teta << " " << psi << endl;
 
             Interp4Set setPlugin;
             setPlugin.SetRobotName(objectName);

@@ -135,6 +135,11 @@ class MobileObj : public AbstractMobileObj {
     ++_StateIdx;
     return true;
   }
+
+  double operator[](char axis) const;
+  double& operator[](char axis);
+  static int GetAxisIndex(char axis) ;
+
 };
 
 #endif
