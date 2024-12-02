@@ -153,6 +153,8 @@ int main(int argc, char **argv) {
             movePlugin.setDistance(distance);
             movePlugin.ExecCmd(scene, objectName.c_str(), comChannel);
 
+
+
             std::ostringstream oss;
             oss << "UpdateObj Name=" << objectName
                 << " Trans_m=" << scene.FindMobileObj(objectName.c_str())->GetPosition_m() << "\n"; 
@@ -161,64 +163,65 @@ int main(int argc, char **argv) {
         }
 
         else if (cmdType == "Rotate") {
-            string objectName;
-            char axis;
-            double ang_speed, ang_deg;
-            iss >> objectName >> axis >> ang_speed >> ang_deg;
+    string objectName;
+    char axis;
+    double ang_speed, ang_deg;
+    iss >> objectName >> axis >> ang_speed >> ang_deg;
 
-            cout << "Odczytano: " << cmdType <<" " << objectName << " " << ang_speed << " " << ang_deg << "\n";
+    // Znajdź obiekt i przygotuj dane
+    AbstractMobileObj *pObj = scene.FindMobileObj(objectName.c_str());
+    if (!pObj) {
+        cerr << "Obiekt " << objectName << " nie został znaleziony w scenie!" << endl;
+        return 1;
+    }
 
-            Interp4Rotate rotatePlugin;
-            rotatePlugin.SetRobotName(objectName);
-            rotatePlugin.SetAxis(axis);
-            rotatePlugin.SetAngularVelocity(ang_speed);
-            rotatePlugin.SetAngle(ang_deg);
-            rotatePlugin.ExecCmd(scene, objectName.c_str(), comChannel);
+    unsigned int index = MobileObj::GetAxisIndex(axis);
+    double deltaRot = ang_speed * 50 / 1000.0; // Delta rotacji na krok (50ms)
+    double remainingAngle = ang_deg; // Pozostały kąt do wykonania
 
-            std::ostringstream oss;
-            oss << "UpdateObj Name=" << objectName
-                 << " RotXYZ_deg=" << scene.FindMobileObj(objectName.c_str())->GetRotXYZ_deg() << "\n";
+    Vector3D currentRot = pObj->GetRotXYZ_deg(); // Pobierz aktualną orientację obiektu
 
-            cout << "Rotate wysłano: " << oss.str() << endl;
-            cout << "to jest dobrze::::" << oss.str() << endl;
-           // Send(Socket4Sending, oss.str().c_str());
+    // Pętla wykonywania obrotu
+    while (abs(remainingAngle) > deltaRot / 2.0) {
+        // Aktualizacja kąta rotacji
+        currentRot[index] += (remainingAngle > 0) ? deltaRot : -deltaRot;
+        remainingAngle -= (remainingAngle > 0) ? deltaRot : -deltaRot;
 
-            
-            unsigned int index = MobileObj::GetAxisIndex(axis);
-            double dt = 50; //delay w ms
-            double deltaRot = dt*ang_speed/1000;
-            // (ang_deg - scene.FindMobileObj(objectName.c_str())->GetRotXYZ_deg()[index]) / STEP_SIZE;
-            Vector3D currentRot  = scene.FindMobileObj(objectName.c_str())->GetRotXYZ_deg();
-            double currAngle = currentRot[index];
+        // Zaktualizuj orientację obiektu w scenie
+        pObj->SetRotXYZ_deg(currentRot);
 
-            while(abs(ang_deg)>deltaRot/2 ) {
-                currAngle += deltaRot;
-                ang_deg -=deltaRot;
-                std::ostringstream oss; // Tworzymy nowy strumień na każdą iterację
-                currentRot[index]+=deltaRot;
-                // Aktualizacja odpowiedniej osi
-               
+        // Tworzenie polecenia UpdateObj
+        std::ostringstream oss;
+        oss << "UpdateObj Name=" << objectName
+            << " RotXYZ_deg=(" << currentRot[0] << ", "
+            << currentRot[1] << ", "
+            << currentRot[2] << ")" << "\n";
 
-                // Tworzenie polecenia UpdateObj
-                oss << "UpdateObj Name=" << objectName
-                    << " RotXYZ_deg=(" << currentRot[0] << ", "
-                    << currentRot[1] << ", "
-                    << currentRot[2] << ")" << "\n";
-                
-                std::string command = oss.str(); // Przechowujemy dane w ciągu znaków
-                std::cout << "Aktualizacja Rotate: " << command << std::endl;
-                std::cout << ang_deg <<  endl;
-                // Wysłanie polecenia do serwera
-                std::cout << command.c_str() << endl;
-                Send(Socket4Sending, command.c_str());
+        std::string command = oss.str();
+        std::cout << "Wysłano: " << command;
 
-                // Opóźnienie dla płynności animacji
-                std::this_thread::sleep_for(std::chrono::milliseconds(50));
-            }
-            
+        // Wysłanie polecenia do serwera
+        Send(Socket4Sending, command.c_str());
 
+        // Opóźnienie dla płynności animacji
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    }
 
-        }
+    // Wyrównanie końcowego kąta do docelowej wartości (aby uniknąć niedokładności)
+    currentRot[index] = pObj->GetRotXYZ_deg()[index] + remainingAngle;
+    pObj->SetRotXYZ_deg(currentRot);
+
+    // Wyślij finalne polecenie do serwera
+    std::ostringstream finalOss;
+    finalOss << "UpdateObj Name=" << objectName
+             << " RotXYZ_deg=(" << currentRot[0] << ", "
+             << currentRot[1] << ", "
+             << currentRot[2] << ")" << "\n";
+
+    Send(Socket4Sending, finalOss.str().c_str());
+    std::cout << "Wysłano (finalne): " << finalOss.str();
+}
+
         
         else if (cmdType == "Set") {
             string objectName;

@@ -1,11 +1,12 @@
 Rotate Podstawa Z 30 60
+Pause Podstawa 1000
+Rotate Podstawa Y 30 60
+Pause Podstawa 1000
+Rotate Podstawa X 30 60
+Pause Podstawa 1000
 Rotate Podstawa Z 30 60
-Pause Podstawa 100
-Rotate Podstawa Z 30 60
-Pause Podstawa 100
-Rotate Podstawa Z 30 60
-Pause Podstawa 100
-Rotate Podstawa Z 30 60
-Pause Podstawa 100
-Rotate Podstawa Z 30 60
-Pause Podstawa 100
+Pause Podstawa 1000
+Rotate Podstawa Y 30 60
+Pause Podstawa 1000
+Rotate Podstawa X 30 60
+Pause Podstawa 1000

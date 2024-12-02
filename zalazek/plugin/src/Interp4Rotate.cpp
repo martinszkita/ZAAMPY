@@ -74,24 +74,24 @@ bool Interp4Rotate::ExecCmd( AbstractScene &rScn, const char * sMobObjName,Abstr
   }
 
     double _new_orientation_deg = 0;
+    Vector3D newOrientationDeg = pObj->GetRotXYZ_deg();
 
     switch(GetAxis()){
         case 'X':
-            _new_orientation_deg = GetAngle() + pObj->GetRotXYZ_deg()[0];
-            pObj->SetRotXYZ_deg(Vector3D({_new_orientation_deg,0,0}));
+            newOrientationDeg[0] += GetAngle();
+            pObj->SetRotXYZ_deg(Vector3D(newOrientationDeg));
             break;
         case 'Y':
-            _new_orientation_deg = GetAngle() + pObj->GetRotXYZ_deg()[1];
-            pObj->SetRotXYZ_deg(Vector3D({0,_new_orientation_deg,0}));
+            newOrientationDeg[1] += GetAngle();
+            pObj->SetRotXYZ_deg(Vector3D(newOrientationDeg));
             break;
         case 'Z':
-            _new_orientation_deg = GetAngle() + pObj->GetRotXYZ_deg()[2];
-            pObj->SetRotXYZ_deg(Vector3D({0,0,_new_orientation_deg}));
-            break;;
+            newOrientationDeg[2] += GetAngle();
+            pObj->SetRotXYZ_deg(Vector3D(newOrientationDeg));
+            break;
         default:
             std::cerr << "Rotation axis error!" << std::endl;
             return false;
-
     }
 
   return true;
